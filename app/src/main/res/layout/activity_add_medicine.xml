@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="-500dp"
+    tools:context=".view.addmedicine.AddMedicineActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_medication_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medication_type"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_medications"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:verticalSpacing="6dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_medication_type"
+            tools:listitem="@layout/medication_item" />
+
+        <TextView
+            android:id="@+id/tv_medication_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medication_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_type"
+            app:layout_constraintTop_toBottomOf="@id/rv_medications"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/sv_medication_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            app:defaultQueryHint="@string/medication_name"
+            app:iconifiedByDefault="false"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_medication_name"/>
+
+        <TextView
+            android:id="@+id/tv_dose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dose"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:visibility="gone"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_name"
+            app:layout_constraintTop_toBottomOf="@id/sv_medication_name"/>
+
+        <EditText
+            android:id="@+id/et_dose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:inputType="number"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/colorPrimary"
+            android:autofillHints="@string/dose"
+            android:visibility="gone"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_dose"
+            app:layout_constraintStart_toStartOf="@id/tv_dose"
+            app:layout_constraintEnd_toStartOf="@id/guideline3"
+            tools:text="2"
+            tools:ignore="LabelFor,RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_dose_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:fontFamily="@font/montserrat_bold"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/et_dose"
+            app:layout_constraintBottom_toBottomOf="@id/et_dose"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintEnd_toEndOf="@id/sv_medication_name"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_intake_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/intake_frequency"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_name"
+            app:layout_constraintTop_toBottomOf="@id/et_dose"/>
+
+        <EditText
+            android:id="@+id/et_intake_frequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:inputType="number"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/grey"
+            android:autofillHints="@string/first_name"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@id/tv_intake_frequency"
+            app:layout_constraintStart_toStartOf="@id/tv_intake_frequency"
+            app:layout_constraintEnd_toStartOf="@id/guideline1"
+            tools:text="2"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <TextView
+            android:id="@+id/tv_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/times"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintStart_toEndOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/et_intake_frequency"
+            app:layout_constraintBottom_toBottomOf="@id/et_intake_frequency"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <TextView
+            android:id="@+id/tv_intake_unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text ="choose"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/_12ssp"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            app:layout_constraintTop_toTopOf="@id/et_intake_frequency"
+            app:layout_constraintBottom_toBottomOf="@id/et_intake_frequency"
+            app:layout_constraintStart_toEndOf="@id/tv_times"
+            app:layout_constraintEnd_toEndOf="@id/sv_medication_name"/>
+
+   <!--     <FrameLayout
+            android:id="@+id/fl_intake_unit_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            app:layout_constraintTop_toTopOf="@id/et_intake_frequency"
+            app:layout_constraintBottom_toBottomOf="@id/et_intake_frequency"
+            app:layout_constraintStart_toEndOf="@id/tv_times"
+            app:layout_constraintEnd_toEndOf="@id/fl_medication_name_container"
+            tools:ignore="RtlSymmetry">
+
+            <Spinner
+                android:id="@+id/sp_intake_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/frequency"
+                android:popupBackground="@color/colorAccent"
+                android:spinnerMode="dialog" />
+
+        </FrameLayout>    -->
+
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/duration"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="@id/tv_medication_name"
+            app:layout_constraintTop_toBottomOf="@id/et_intake_frequency"/>
+
+        <EditText
+            android:id="@+id/et_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:inputType="number"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textColorHint="@color/grey"
+            android:autofillHints="@string/first_name"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@id/tv_duration"
+            app:layout_constraintStart_toStartOf="@id/tv_duration"
+            app:layout_constraintEnd_toStartOf="@id/guideline3"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <FrameLayout
+            android:id="@+id/fl_duration_unit_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            app:layout_constraintTop_toTopOf="@id/et_duration"
+            app:layout_constraintBottom_toBottomOf="@id/et_duration"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintEnd_toEndOf="@id/tv_start_time"
+            tools:ignore="RtlSymmetry">
+
+            <Spinner
+                android:id="@+id/sp_duration_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/units"
+                android:popupBackground="@color/colorAccent"
+                android:spinnerMode="dialog" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_start_date_and_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_date_and_time"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="@id/tv_duration"
+            app:layout_constraintTop_toBottomOf="@id/et_duration"/>
+
+        <TextView
+            android:id="@+id/tv_start_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14ssp"
+            android:text="@string/start_date"
+            android:textColor="@color/grey"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_start_date_and_time"
+            app:layout_constraintStart_toStartOf="@id/tv_start_date_and_time"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"/>
+
+        <ImageView
+            android:id="@+id/iv_start_calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calender"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintTop_toTopOf="@id/tv_start_date"
+            app:layout_constraintBottom_toBottomOf="@id/tv_start_date"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_start_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14ssp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintTop_toTopOf="@id/tv_start_date"
+            app:layout_constraintBottom_toBottomOf="@id/tv_start_date"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintEnd_toEndOf="@id/sv_medication_name"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageView
+            android:id="@+id/iv_start_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_clock"
+            android:paddingEnd="@dimen/_20sdp"
+            android:clickable="false"
+            app:layout_constraintTop_toTopOf="@id/tv_start_time"
+            app:layout_constraintBottom_toBottomOf="@id/tv_start_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_end_date_and_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date_and_time"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="@id/tv_duration"
+            app:layout_constraintTop_toBottomOf="@id/tv_start_date"/>
+
+        <TextView
+            android:id="@+id/tv_end_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14ssp"
+            android:hint="@string/end_date"
+            android:textColor="@color/grey"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_end_date_and_time"
+            app:layout_constraintStart_toStartOf="@id/tv_end_date_and_time"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"/>
+
+        <TextView
+            android:id="@+id/tv_end_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/end_time"
+            android:textSize="@dimen/_14ssp"
+            android:background="@drawable/unselected_medication"
+            android:backgroundTint="@color/light_grey"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintTop_toTopOf="@id/tv_end_date"
+            app:layout_constraintBottom_toBottomOf="@id/tv_end_date"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintEnd_toEndOf="@id/tv_start_time"
+            tools:ignore="RtlSymmetry" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_alarm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_alarm_list"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_17ssp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:background="@drawable/edit_text_background"
+            app:backgroundTint="@color/colorPrimary"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_end_date"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

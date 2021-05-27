@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/background_view"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/_20ssp"
+       android:visibility="gone">
+
+       <androidx.cardview.widget.CardView
+           xmlns:card_view="http://schemas.android.com/apk/res-auto"
+           android:id="@+id/bg_card_option"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:cardBackgroundColor="@color/light_blue"
+           card_view:cardCornerRadius="@dimen/_20sdp"
+           card_view:contentPadding="@dimen/_13sdp"
+           card_view:layout_constraintEnd_toEndOf="parent"
+           card_view:layout_constraintTop_toTopOf="parent"
+           card_view:layout_constraintBottom_toBottomOf="parent">
+
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+
+               <ImageView
+                   android:id="@+id/iv_bg_delete"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_trash"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   android:contentDescription="@null" />
+
+               <ImageView
+                   android:id="@+id/iv_bg_edit"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_edit_white"
+                   android:layout_marginTop="@dimen/_10sdp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toBottomOf="@id/iv_bg_delete"
+                   android:contentDescription="@null" />
+
+               <ImageView
+                   android:id="@+id/iv_bg_calender"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_calender_white"
+                   android:layout_marginTop="@dimen/_10sdp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toBottomOf="@id/iv_bg_edit"
+                   android:contentDescription="@null" />
+
+           </androidx.constraintlayout.widget.ConstraintLayout>
+       </androidx.cardview.widget.CardView>
+
+       <androidx.cardview.widget.CardView
+           xmlns:card_view="http://schemas.android.com/apk/res-auto"
+           android:id="@+id/bg_card_main"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginEnd="@dimen/_50sdp"
+           app:cardBackgroundColor="@color/white"
+           card_view:cardCornerRadius="@dimen/_20sdp"
+           card_view:contentPadding="@dimen/_20sdp"
+           card_view:layout_constraintStart_toStartOf="parent"
+           card_view:layout_constraintEnd_toEndOf="parent"
+           card_view:layout_constraintTop_toTopOf="parent"
+           card_view:layout_constraintBottom_toBottomOf="parent">
+
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+
+               <ImageView
+                   android:id="@+id/iv_medication_type_bg"
+                   android:layout_width="@dimen/_50sdp"
+                   android:layout_height="@dimen/_50sdp"
+                   android:src="@drawable/ic_diabetes"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintEnd_toStartOf="@id/tv_medication_name_bg"
+                   app:layout_constraintTop_toTopOf="@id/tv_medication_name_bg"
+                   app:layout_constraintBottom_toBottomOf="@id/iv_clock_bg"
+                   android:contentDescription="@null" />
+
+               <TextView
+                   android:id="@+id/tv_medication_name_bg"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_16ssp"
+                   android:textColor="@color/colorPrimary"
+                   android:fontFamily="@font/montserrat_bold"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <TextView
+                   android:id="@+id/tv_medication_dose_bg"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_12ssp"
+                   android:textColor="@color/colorPrimary"
+                   android:layout_marginTop="@dimen/_5sdp"
+                   android:fontFamily="@font/montserrat_semi_bold"
+                   app:layout_constraintStart_toStartOf="@id/tv_medication_name_bg"
+                   app:layout_constraintTop_toBottomOf="@id/tv_medication_name_bg" />
+
+               <ImageView
+                   android:id="@+id/iv_clock_bg"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_clock"
+                   android:layout_marginTop="@dimen/_15sdp"
+                   app:layout_constraintStart_toStartOf="@id/tv_medication_dose_bg"
+                   app:layout_constraintTop_toBottomOf="@id/tv_medication_dose_bg"
+                   android:contentDescription="@null" />
+
+               <TextView
+                   android:id="@+id/tv_time_bg"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_16ssp"
+                   android:textColor="@color/colorPrimary"
+                   android:layout_marginStart="@dimen/_5sdp"
+                   android:fontFamily="@font/montserrat_semi_bold"
+                   app:layout_constraintStart_toEndOf="@id/iv_clock_bg"
+                   app:layout_constraintTop_toTopOf="@id/iv_clock_bg"
+                   app:layout_constraintBottom_toBottomOf="@id/iv_clock_bg" />
+
+               <ImageView
+                   android:id="@+id/iv_bell_bg"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_bell"
+                   android:layout_marginEnd="@dimen/_10sdp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="@id/iv_clock_bg"
+                   app:layout_constraintBottom_toBottomOf="@id/iv_clock_bg"
+                   android:contentDescription="@null" />
+
+           </androidx.constraintlayout.widget.ConstraintLayout>
+
+       </androidx.cardview.widget.CardView>
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/foreground_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_20sdp"
+        card_view:contentPadding="@dimen/_20sdp"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_medication_type"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_diabetes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_medication_name"
+                app:layout_constraintTop_toTopOf="@id/tv_medication_name"
+                app:layout_constraintBottom_toBottomOf="@id/iv_clock"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tv_medication_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_medication_dose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_semi_bold"
+                app:layout_constraintStart_toStartOf="@id/tv_medication_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_medication_name" />
+
+            <ImageView
+                android:id="@+id/iv_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clock"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/tv_medication_dose"
+                app:layout_constraintTop_toBottomOf="@id/tv_medication_dose"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/montserrat_semi_bold"
+                app:layout_constraintStart_toEndOf="@id/iv_clock"
+                app:layout_constraintTop_toTopOf="@id/iv_clock"
+                app:layout_constraintBottom_toBottomOf="@id/iv_clock" />
+
+            <ImageView
+                android:id="@+id/iv_bell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bell"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_clock"
+                app:layout_constraintBottom_toBottomOf="@id/iv_clock"
+                android:contentDescription="@null" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+

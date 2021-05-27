@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/alarm_background">
+
+    <TextView
+        android:id="@+id/tv_chronic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_37ssp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="9:30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.29" />
+
+    <ImageView
+        android:id="@+id/iv_medication"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:src="@drawable/ic_cough_syrup"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:padding="@dimen/_20sdp"
+        android:background="@drawable/alarm_medication_background"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/guideline"/>
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hi"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_19ssp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/iv_medication"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time_for_medication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_for_medication"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_medication_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_for_medication"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_medication_dose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_18ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_medication_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_taken"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/taken"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_17ssp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/montserrat_bold"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_snooze" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_snooze"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/snooze"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_17ssp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/edit_text_background"
+        app:backgroundTint="@color/red"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_stop"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_stop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/stop"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_17ssp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/montserrat_bold"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/btn_snooze"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_snooze"
+        app:layout_constraintBottom_toBottomOf="@id/btn_snooze"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

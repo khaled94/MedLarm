@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/intro_background">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:src="@mipmap/ic_globe_image"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_choose_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_language"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <RadioGroup
+        android:id="@+id/rg_choose_language"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/iv_logo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_language">
+
+        <RadioButton
+            android:id="@+id/rb_first_language"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@drawable/selected_medication"
+            android:button="@null"
+            android:drawablePadding="30dp"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:text="@string/english"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+            android:padding="@dimen/_5sdp"
+            android:gravity="start"
+            tools:ignore="RtlSymmetry"
+            android:onClick="onLanguageChecked"/>
+
+        <RadioButton
+            android:id="@+id/rb_second_language"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:background="@drawable/selected_medication"
+            android:drawablePadding="30dp"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:text="@string/arabic"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+            android:gravity="start"
+            android:onClick="onLanguageChecked"/>
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/montserrat_semi_bold"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rg_choose_language" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--   <FrameLayout
+           android:id="@+id/fl_choose_language"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:padding="@dimen/_10sdp"
+           android:paddingEnd="@dimen/_50sdp"
+           android:layout_marginEnd="@dimen/_10sdp"
+           android:background="@drawable/edit_text_background"
+           android:backgroundTint="@color/faded_light_blue"
+           app:layout_constraintTop_toBottomOf="@id/guideline2"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           tools:ignore="RtlSymmetry">
+
+           <Spinner
+               android:id="@+id/sp_languages"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:entries="@array/Languages"
+               android:popupBackground="@color/colorAccent"
+               android:spinnerMode="dialog" />
+
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="end"
+               android:contentDescription="@null"
+               android:src="@drawable/ic_arrow_down_black" />
+
+       </FrameLayout> -->

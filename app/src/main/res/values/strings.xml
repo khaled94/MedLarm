@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">MedLarm</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="login">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="have_chronic">Do you Have Chronic Disease</string>
+    <string name="have_account">Do you have an account?</string>
+    <string name="hypertension">Hypertension</string>
+    <string name="high_cholesterol">High Cholesterol</string>
+    <string name="ischemic_heart">Ischemic Heart</string>
+    <string name="diabetes">Diabetes</string>
+    <string name="chronic_kidney">Chronic\nKidney</string>
+    <string name="arthritis">Arthritis</string>
+    <string name="obstructive_pulmonary">Obstructive Pulmonary</string>
+    <string name="alzheimer">Alzheimer</string>
+    <string name="depression">Depression</string>
+    <string name="heart_failure">Heart Failure</string>
+    <string name="choose_language">Choose your Language</string>
+    <string name="skip">Skip</string>
+    <string name="medication_type">Medication Type</string>
+    <string name="tablet">Tablet</string>
+    <string name="capsule">Capsule</string>
+    <string name="liquid">Liquid</string>
+    <string name="drops">Drops</string>
+    <string name="injection">Injection</string>
+    <string name="inhaler">Inhaler</string>
+    <string name="suppository">Suppository</string>
+    <string name="topical">Topical</string>
+    <string name="medication_name">Medication Name</string>
+    <string name="intake_frequency">Intake Frequency</string>
+    <string name="times">Times</string>
+    <string name="duration">Duration</string>
+    <string name="start_date_and_time">Start Date And Time</string>
+    <string name="end_date_and_time">End Date And Time</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_date">End Date</string>
+    <string name="end_time">End Time</string>
+    <string name="add_to_alarm_list">Add to Alarm List</string>
+    <string name="number">Number</string>
+    <string name="day">Day</string>
+    <string name="dose">Dose</string>
+    <string name="hi">Hi Mohamed Ahmed</string>
+    <string name="add_profile">Add Profile</string>
+    <string name="setting">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="language">Language</string>
+    <string name="about">About</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="logout">Logout</string>
+    <string name="profile_history">Profile History</string>
+    <string name="time_for_medication">It\'s time for Your medication</string>
+    <string name="enter_your_email_address">Enter Your Email Address</string>
+    <string name="taken">Taken</string>
+    <string name="snooze">Snooze</string>
+    <string name="stop">Stop</string>
+    <string name="next">Next</string>
+    <string name="chronic_diseases">Chronic Diseases</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="user_history">User History</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string-array name="units">
+        <item>Day</item>
+        <item>Week</item>
+    </string-array>
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Arabic</item>
+    </string-array>
+    <string-array name="frequency">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+</resources>

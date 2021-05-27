@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_medication"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:background="@drawable/unselected_medication"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_medication_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/_11ssp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_semi_bold"
+        app:layout_constraintStart_toStartOf="@id/iv_medication"
+        app:layout_constraintEnd_toEndOf="@id/iv_medication"
+        app:layout_constraintTop_toBottomOf="@id/iv_medication"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
