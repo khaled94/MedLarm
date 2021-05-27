@@ -71,7 +71,9 @@
             android:screenOrientation="portrait">
         </receiver>
 
-        <service android:name=".view.alarm.AlarmService"/>
+        <service android:name=".view.alarm.AlarmService"
+                 android:enabled="true"
+                 android:exported="false"/>
 
     </application>
 
