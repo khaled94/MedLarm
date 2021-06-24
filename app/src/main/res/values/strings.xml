@@ -22,12 +22,17 @@
     <string name="high_cholesterol">High Cholesterol</string>
     <string name="ischemic_heart">Ischemic Heart</string>
     <string name="diabetes">Diabetes</string>
-    <string name="chronic_kidney">Chronic\nKidney</string>
     <string name="arthritis">Arthritis</string>
     <string name="obstructive_pulmonary">Obstructive Pulmonary</string>
     <string name="alzheimer">Alzheimer</string>
     <string name="depression">Depression</string>
-    <string name="heart_failure">Heart Failure</string>
+    <string name="heart_disease">Heart Disease</string>
+    <string name="kidney_disease">Kidney Disease</string>
+    <string name="liver_disease">Liver Disease</string>
+    <string name="asthma">Asthma</string>
+    <string name="chronic_obstructive_pulmonary_disease">Chronic Obstructive Pulmonary Disease</string>
+    <string name="osteoporosis">Osteoporosis</string>
+    <string name="cancer">Cancer</string>
     <string name="choose_language">Choose your Language</string>
     <string name="skip">Skip</string>
     <string name="medication_type">Medication Type</string>
@@ -75,6 +80,8 @@
     <string name="arabic">Arabic</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="click">Click anywhere to open application</string>
+    <string name="other">Other</string>
     <string-array name="units">
         <item>Day</item>
         <item>Week</item>

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">MedLarm</string>
     <string name="email">البريد الإلكتروني</string>
-    <string name="password">"                      كلمه السر"</string>
+    <string name="password">"كلمه السر"</string>
     <string name="forget_password">هل نسيت كلمة السر؟</string>
     <string name="login">تسجيل الدخول</string>
     <string name="no_account">ليس لديك حساب؟</string>
@@ -20,15 +20,20 @@
     <string name="have_chronic">هل لديك مرض مزمن</string>
     <string name="have_account">هل لديك حساب؟</string>
     <string name="hypertension">ارتفاع ضغط الدم</string>
+    <string name="heart_disease">امراض القلب</string>
     <string name="high_cholesterol">ارتفاع مستويات الكوليسترول</string>
     <string name="ischemic_heart">مرض القلب الإقفاري</string>
     <string name="diabetes">السكري</string>
-    <string name="chronic_kidney">الكلى المزمنة</string>
     <string name="arthritis">التهاب المفاصل</string>
     <string name="obstructive_pulmonary">الانسداد الرئوي</string>
     <string name="alzheimer">مرض النسيان</string>
     <string name="depression">الاكتئاب</string>
-    <string name="heart_failure">سكتة قلبية</string>
+    <string name="kidney_disease">مرض الكلية</string>
+    <string name="liver_disease">مرض الكبد</string>
+    <string name="asthma">مرض الربو</string>
+    <string name="chronic_obstructive_pulmonary_disease">انسداد رئوي مزمن</string>
+    <string name="osteoporosis">هشاشة العظام</string>
+    <string name="cancer">السرطان</string>
     <string name="choose_language">اختر اللغة</string>
     <string name="skip">تخطى</string>
     <string name="medication_type">نوع الدواء</string>
@@ -76,4 +81,6 @@
     <string name="arabic">العربية</string>
     <string name="confirm">تأكيد</string>
     <string name="cancel">الغاء</string>
+    <string name="click">انقر في أي مكان لفتح التطبيق</string>
+    <string name="other">انواع آخرى</string>
 </resources>

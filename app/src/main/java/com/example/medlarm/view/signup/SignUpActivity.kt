@@ -48,12 +48,25 @@ class SignUpActivity : BaseActivity() {
         val chronic2 = Chronic(getString(R.string.high_cholesterol), R.drawable.ic_high_cholesterol, false)
         val chronic3 = Chronic(getString(R.string.ischemic_heart), R.drawable.ic_ischemic_heart, false)
         val chronic4 = Chronic(getString(R.string.diabetes), R.drawable.ic_diabetes, false)
-        val chronic5 = Chronic(getString(R.string.chronic_kidney), R.drawable.ic_chronic_kidney, false)
+        val chronic5 = Chronic(getString(R.string.kidney_disease), R.drawable.ic_chronic_kidney, false)
         val chronic6 = Chronic(getString(R.string.arthritis), R.drawable.ic_arthritis, false)
         val chronic7 = Chronic(getString(R.string.obstructive_pulmonary), R.drawable.ic_obstructive_pulmonary, false)
         val chronic8 = Chronic(getString(R.string.alzheimer), R.drawable.ic_alzheimer, false)
         val chronic9 = Chronic(getString(R.string.depression), R.drawable.ic_depression, false)
-        val chronic10 = Chronic(getString(R.string.heart_failure), R.drawable.ic_heart_failure, false)
+        val chronic10 = Chronic(getString(R.string.heart_disease), R.drawable.ic_heart_disease, false)
+
+        /*
+        2 chronic obstructive pulmonary disease
+        3 cancer
+        8
+        7
+	liver_disease
+	asthma
+
+	osteoporosis
+
+	other
+         */
 
         chronics.add(chronic1)
         chronics.add(chronic2)

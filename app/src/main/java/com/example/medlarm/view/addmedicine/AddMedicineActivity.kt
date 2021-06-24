@@ -58,12 +58,8 @@ class AddMedicineActivity : BaseActivity() {
         val medication4 = Medication(getString(R.string.drops), R.drawable.ic_drop, false)
         val medication5 = Medication(getString(R.string.injection), R.drawable.ic_drugs, false)
         val medication6 = Medication(getString(R.string.inhaler), R.drawable.ic_inhaler, false)
-        val medication7 = Medication(
-            getString(R.string.suppository),
-            R.drawable.ic_suppository,
-            false
-        )
-        val medication8 = Medication(getString(R.string.topical), R.drawable.ic_topical, false)
+        val medication7 = Medication(getString(R.string.topical), R.drawable.ic_topical, false)
+        val medication8 = Medication(getString(R.string.other), R.drawable.ic_suppository, false)
 
         medicationTypes.add(medication1)
         medicationTypes.add(medication2)

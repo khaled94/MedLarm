@@ -1,6 +1,9 @@
 package com.example.medlarm.view.home
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +14,7 @@ import com.example.medlarm.R
 import com.example.medlarm.databinding.ActivityHomeBinding
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
 import com.example.medlarm.view.alarm.AlarmActivity
+import com.example.medlarm.view.alarm.Receiver
 import com.example.medlarm.view.common.*
 import com.example.medlarm.view.editmedicine.EditMedicineActivity
 import com.example.medlarm.view.medicinehistory.MedicineHistoryActivity
@@ -30,14 +34,43 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val alarms = mutableListOf<Alarm>()
-    private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+
+    private val REQUEST_CODE = 100
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
+
+        // Creating the pending intent to send to the BroadcastReceiver
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val receiverIntent = Intent(this, Receiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, receiverIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // Setting the specific time for the alarm manager to trigger the intent, in this example, the alarm is set to go off at 23:30, update the time according to your need
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY))
+        calendar.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE)+1)
+
+        // Starts the alarm manager
+        /* alarmManager.setRepeating(
+             AlarmManager.RTC,
+             calendar.timeInMillis,
+             AlarmManager.INTERVAL_DAY,
+             pendingIntent
+         )*/
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+
         linearLayoutManager = LinearLayoutManager(this)
         homeBinding.rvAlarms.layoutManager = linearLayoutManager
 //        loginViewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)

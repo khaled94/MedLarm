@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/window_background"
+    android:paddingBottom="@dimen/_30sdp"
+    android:paddingStart="@dimen/_15sdp"
+    android:paddingEnd="@dimen/_15sdp">
+
+    <TextView
+        android:id="@+id/tv_medlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_19ssp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <ImageView
+        android:id="@+id/iv_medication"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/ic_cough_syrup"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:padding="@dimen/_20sdp"
+        android:background="@drawable/alarm_medication_background"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_medlarm" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hi"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_19ssp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/iv_medication"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time_for_medication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/medication_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9:30"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_for_medication"
+        app:layout_constraintStart_toStartOf="@id/tv_time_for_medication"
+        app:layout_constraintEnd_toEndOf="@id/tv_time_for_medication" />
+
+    <TextView
+        android:id="@+id/tv_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/click"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

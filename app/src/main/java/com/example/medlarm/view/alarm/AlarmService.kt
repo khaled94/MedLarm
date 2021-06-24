@@ -1,6 +1,5 @@
 package com.example.medlarm.view.alarm
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -9,88 +8,131 @@ import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import com.example.medlarm.R
 import com.example.medlarm.data.Constants.CHANNEL_ID
-import com.example.medlarm.view.common.WindowView
-import java.util.*
-
+import com.example.medlarm.databinding.WindowAlarmBinding
+import com.example.medlarm.view.login.LoginActivity
+import org.w3c.dom.Text
+import kotlin.properties.Delegates
 
 class AlarmService : Service() {
 
-    // declaring variables
-    lateinit var notificationChannel: NotificationChannel
-    lateinit var notificationManager: NotificationManager
-
+    //lateinit var notificationManager: NotificationManager
+    private lateinit var notification: Notification
     private lateinit var mediaPlayer : MediaPlayer
     private lateinit var vibrator: Vibrator
+    private var layoutType by Delegates.notNull<Int>()
+    lateinit var binding: WindowAlarmBinding
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val mView = WindowView(this)
-        val chatHead = ImageView(this)
-        chatHead.setImageResource(R.drawable.ic_alzheimer)
+        val floatView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+            .inflate(R.layout.window_alarm, null)
+       // binding = WindowAlarmBinding.inflate(R.layout.window_alarm)
 
-        val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.MATCH_PARENT, 150, 10, 10,
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            PixelFormat.TRANSLUCENT
-        )
+        var texttest = floatView.findViewById(R.id.tv_time) as TextView
+        layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        else
+            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+
+        val params =
+                WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                layoutType,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSPARENT)
+
         params.gravity = Gravity.CENTER
-        params.title = "test"
-        windowManager.addView(mView, params)
+        params.x = 0
+        params.y = 0
+        windowManager.addView(floatView, params)
+
+          texttest.setOnClickListener {
+            windowManager.removeView(floatView)
+            val intent = Intent(applicationContext, LoginActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_NEW_TASK
+            applicationContext.startActivity(intent)
+            mediaPlayer.stop()
+            vibrator.cancel()
+        }
+
+        floatView.setOnClickListener {
+            windowManager.removeView(floatView)
+            val intent = Intent(applicationContext, AlarmActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_NEW_TASK
+            applicationContext.startActivity(intent)
+            mediaPlayer.stop()
+            vibrator.cancel()
+        }
 
         mediaPlayer = MediaPlayer.create(this, R.raw.eraser)
         mediaPlayer.isLooping = true
-        notificationManager =
-                             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        //vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        //notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("RemoteViewLayout")
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val notificationIntent = Intent(this, RingActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmTitle = String.format("%s Alarm", intent.getStringExtra("Title"))
 
-        val notificationLayout = RemoteViews(packageName, R.layout.notification_alarm)
+        //val notificationLayout = RemoteViews(packageName, R.layout.notification_alarm)
+        notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(alarmTitle)
+            .setSmallIcon(R.drawable.ic_bell)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            //.setCustomContentView(notificationLayout)
+            //.setCustomBigContentView(notificationLayout)
+            //.setPriority(NotificationCompat.PRIORITY_HIGH)
+            //.setFullScreenIntent(pendingIntent, true)
+            .build()
 
-            val notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle(alarmTitle)
-                    .setSmallIcon(R.drawable.ic_bell)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    //.setCustomContentView(notificationLayout)
-                    //.setCustomBigContentView(notificationLayout)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setFullScreenIntent(pendingIntent, true)
-                    .build()
-            }
-            else {
-                TODO("VERSION.SDK_INT < O")
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                vibrator.vibrate(VibrationEffect.createOneShot
+                                                (30000, VibrationEffect.DEFAULT_AMPLITUDE))
+        else
+            vibrator.vibrate(30000)
 
         mediaPlayer.start()
-        val pattern = longArrayOf(0, 100, 1000)
-        //vibrator.vibrate(pattern, 0)
+        notificationIntent.flags = FLAG_ACTIVITY_NEW_TASK
+        startForeground(1, notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        }
+        return START_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // notificationManager.cancel(1)
+         mediaPlayer.stop()
+         vibrator.cancel()
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+}
+
+/*
+  //vibrator.vibrate(pattern, 0)
        // notification.flags = Notification.FLAG_AUTO_CANCEL
        // notificationManager.notify(0, notification)
        // startForeground(1, notification)
-        notificationIntent.flags = FLAG_ACTIVITY_NEW_TASK
+
         //this.startActivity(notificationIntent)
       /*  val builder = AlertDialog.Builder(applicationContext)
         builder.setTitle("Android Alert")
@@ -98,24 +140,5 @@ class AlarmService : Service() {
         val dialog: AlertDialog = builder.create()
         dialog.window!!.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL)
         dialog.show*/
-        notificationManager.notify(0, notification)
-
-        return START_NOT_STICKY
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        notificationManager.cancel(1)
-         mediaPlayer.stop()
- //       vibrator.cancel()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun showCustomPopupMenu() {
-
-    }
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-}
+        //notificationManager.notify(0, notification)
+ */
