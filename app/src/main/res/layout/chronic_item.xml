@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grey"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_9ssp"
         android:layout_marginTop="@dimen/_5sdp"
         android:gravity="center"
         android:fontFamily="@font/montserrat_bold"

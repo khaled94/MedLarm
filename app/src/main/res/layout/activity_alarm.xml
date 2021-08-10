@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+   <Button
         android:id="@+id/btn_taken"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_snooze" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_snooze"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_stop"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_stop"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -143,5 +143,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_snooze"
         app:layout_constraintBottom_toBottomOf="@id/btn_snooze"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

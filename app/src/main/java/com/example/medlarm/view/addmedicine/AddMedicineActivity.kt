@@ -28,12 +28,11 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 
-class AddMedicineActivity : BaseActivity() {
+class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    //  lateinit var loginViewModel: LoginViewModel
-    private lateinit var addMedicineBinding: ActivityAddMedicineBinding
+    lateinit var addMedicineViewModel: AddMedicineViewModel
 
     private var gridLayoutManager: GridLayoutManager? = null
     private val medicationTypes = mutableListOf<Medication>()
@@ -44,13 +43,15 @@ class AddMedicineActivity : BaseActivity() {
     var startMonth by Delegates.notNull<Int>()
     var startDay by Delegates.notNull<Int>()
 
+    override fun getViewBinding() = ActivityAddMedicineBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addMedicineBinding = ActivityAddMedicineBinding.inflate(layoutInflater)
-        setContentView(addMedicineBinding.root)
-//        loginViewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
+        setContentView(binding.root)
+        addMedicineViewModel =
+            ViewModelProvider(this, viewModelFactory).get(AddMedicineViewModel::class.java)
         gridLayoutManager = GridLayoutManager(this, 4)
-        addMedicineBinding.rvMedications.layoutManager = gridLayoutManager
+        binding.rvMedications.layoutManager = gridLayoutManager
 
         val medication1 = Medication(getString(R.string.tablet), R.drawable.ic_tablet, false)
         val medication2 = Medication(getString(R.string.capsule), R.drawable.ic_capsule, false)
@@ -70,7 +71,7 @@ class AddMedicineActivity : BaseActivity() {
         medicationTypes.add(medication7)
         medicationTypes.add(medication8)
 
-        addMedicineBinding.rvMedications.adapter =
+        binding.rvMedications.adapter =
             AddMedicineAdapter(medicationTypes) { medication: Medication ->
                 selectMedication(medication)
             }
@@ -84,9 +85,9 @@ class AddMedicineActivity : BaseActivity() {
         //val medication = arrayOf<String?>("Panadol", "Moov", "Decl")
         val newMedications = listOf("Panadol", "Moov", "Decl")
         //val adpater = CursorAdapter(this, null , R.layout.medicine_name_item)
-        addMedicineBinding.svMedicationName.suggestionsAdapter = cursorAdapter
+        binding.svMedicationName.suggestionsAdapter = cursorAdapter
 
-        addMedicineBinding.svMedicationName.setOnQueryTextListener(object :
+        binding.svMedicationName.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -105,7 +106,7 @@ class AddMedicineActivity : BaseActivity() {
                     newMedications.forEachIndexed { index, medication ->
                         if (medication.contains(query, true))
                             cursor.addRow(arrayOf(index, medication))
-                        Log.e("medication",medication)
+                        Log.e("medication", medication)
                     }
                 }
                 cursorAdapter.changeCursor(cursor)
@@ -113,7 +114,7 @@ class AddMedicineActivity : BaseActivity() {
             }
         })
 
-        addMedicineBinding.svMedicationName.setOnSuggestionListener(object :
+        binding.svMedicationName.setOnSuggestionListener(object :
             SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
                 return false
@@ -121,20 +122,24 @@ class AddMedicineActivity : BaseActivity() {
 
             override fun onSuggestionClick(position: Int): Boolean {
                 hideKeyboard()
-                val cursor = addMedicineBinding.svMedicationName.suggestionsAdapter.getItem(position) as Cursor
-                val selection = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
-                addMedicineBinding.svMedicationName.setQuery(selection, true)
-                Log.e("selection", cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1).toString())
+                val cursor = binding.svMedicationName.suggestionsAdapter.getItem(position) as Cursor
+                val selection =
+                    cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
+                binding.svMedicationName.setQuery(selection, true)
+                Log.e(
+                    "selection",
+                    cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1).toString()
+                )
                 // Do something with selection
                 return true
             }
         })
 
 
-      /*  val arrayAdapter: ArrayAdapter<Any?> =
-            ArrayAdapter<Any?>(this, R.layout.medication_spinner_item, medication)
-        arrayAdapter.setDropDownViewResource(R.layout.medication_spinner_item)
-        addMedicineBinding.spMedicationName.adapter = arrayAdapter*/
+        /*  val arrayAdapter: ArrayAdapter<Any?> =
+              ArrayAdapter<Any?>(this, R.layout.medication_spinner_item, medication)
+          arrayAdapter.setDropDownViewResource(R.layout.medication_spinner_item)
+          binding.spMedicationName.adapter = arrayAdapter*/
 
 
         val startDateSetListener =
@@ -154,7 +159,7 @@ class AddMedicineActivity : BaseActivity() {
                 updateDateInView()
             }
 
-        addMedicineBinding.ivStartCalender.setOnClickListener {
+        binding.ivStartCalender.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 this,
                 startDateSetListener,
@@ -185,7 +190,7 @@ class AddMedicineActivity : BaseActivity() {
                 updateTimeInView()
         }
 
-        addMedicineBinding.ivStartClock.setOnClickListener {
+        binding.ivStartClock.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 this,
                 android.R.style.Theme_Holo_Light_Dialog,
@@ -195,8 +200,8 @@ class AddMedicineActivity : BaseActivity() {
             timePickerDialog.show()
         }
 
-        addMedicineBinding.tvIntakeUnit.setOnClickListener {
-            lateinit var dialog:AlertDialog
+        binding.tvIntakeUnit.setOnClickListener {
+            lateinit var dialog: AlertDialog
             val choiceList = arrayOf("Daily", "weekly", "monthly", "sunday", "monday")
             val checkedList = booleanArrayOf(false, false, false, false, false)
             val builder = AlertDialog.Builder(this)
@@ -220,7 +225,7 @@ class AddMedicineActivity : BaseActivity() {
                 choiceList.indices.forEach { i ->
                     val checked = checkedList[i]
                     if (checked) {
-                        addMedicineBinding.tvIntakeUnit.text = choiceList[i]
+                        binding.tvIntakeUnit.text = choiceList[i]
                         // text_view.text = "${text_view.text}  ${arrayColors[i]} \n"
                     }
                 }
@@ -233,33 +238,41 @@ class AddMedicineActivity : BaseActivity() {
             // Finally, display the alert dialog
             dialog.show()
         }
+
+        /*  binding.btnAddAlarm.setOnClickListener {
+              addMedicineViewModel.login(
+                  binding.etUsername.text.toString(),
+                  binding.etPassword.text.toString()
+              )
+          }*/
     }
 
     private fun selectMedication(medication: Medication) {
-        addMedicineBinding.tvDoseType.text = medication.name
-        if( medication.name == "Tablet" || medication.name == "Capsule"
-            || medication.name == "Liquid" || medication.name == "Drops" ){
-            addMedicineBinding.etDose.visibility = View.VISIBLE
-            addMedicineBinding.tvDose.visibility = View.VISIBLE
-            addMedicineBinding.tvDoseType.visibility = View.VISIBLE
-        }
-        else{
-            addMedicineBinding.etDose.visibility = View.GONE
-            addMedicineBinding.tvDose.visibility = View.GONE
-            addMedicineBinding.tvDoseType.visibility = View.GONE
+        binding.tvDoseType.text = medication.name
+        if ((medication.name == "Tablet" || medication.name == "Capsule"
+            || medication.name == "Liquid" || medication.name == "Drops")
+            && medication.isChecked
+        ) {
+            binding.etDose.visibility = View.VISIBLE
+            binding.tvDose.visibility = View.VISIBLE
+            binding.tvDoseType.visibility = View.VISIBLE
+        } else {
+            binding.etDose.visibility = View.GONE
+            binding.tvDose.visibility = View.GONE
+            binding.tvDoseType.visibility = View.GONE
         }
     }
 
     private fun updateDateInView() {
         val format = "dd/MM/yyyy" // mention the format you need
         val sdf = SimpleDateFormat(format, Locale.US)
-        addMedicineBinding.tvStartDate.text = sdf.format(calender.time)
+        binding.tvStartDate.text = sdf.format(calender.time)
     }
 
     private fun updateTimeInView() {
         val format = "HH:mm" // mention the format you need
         val sdf = SimpleDateFormat(format, Locale.US)
-        addMedicineBinding.tvStartTime.text = sdf.format(calender.time)
+        binding.tvStartTime.text = sdf.format(calender.time)
     }
 }
 

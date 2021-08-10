@@ -6,23 +6,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medlarm.databinding.ActivityUserHistoryBinding
 import com.example.medlarm.view.common.Alarm
 import com.example.medlarm.view.common.BaseActivity
-import com.example.medlarm.view.home.HomeAdapter
-import java.text.SimpleDateFormat
 import java.util.*
 
-class UserHistoryActivity : BaseActivity()  {
+class UserHistoryActivity : BaseActivity<ActivityUserHistoryBinding>() {
 
-    lateinit var userHistoryBinding: ActivityUserHistoryBinding
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val alarms = mutableListOf<Alarm>()
+
+    override fun getViewBinding() = ActivityUserHistoryBinding.inflate(layoutInflater)
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userHistoryBinding = ActivityUserHistoryBinding.inflate(layoutInflater)
-        setContentView(userHistoryBinding.root)
+        binding = ActivityUserHistoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         linearLayoutManager = LinearLayoutManager(this)
-        userHistoryBinding.rvAlarms.layoutManager = linearLayoutManager
+        binding.rvAlarms.layoutManager = linearLayoutManager
 
         val alarm1 = Alarm("panadol", "once", null, null,
             Date(2019, 3, 3),Date(2019, 5, 10))
@@ -35,6 +34,6 @@ class UserHistoryActivity : BaseActivity()  {
         alarms.add(alarm2)
         alarms.add(alarm3)
 
-        userHistoryBinding.rvAlarms.adapter = UserHistoryAdapter(alarms)
+        binding.rvAlarms.adapter = UserHistoryAdapter(alarms)
     }
 }

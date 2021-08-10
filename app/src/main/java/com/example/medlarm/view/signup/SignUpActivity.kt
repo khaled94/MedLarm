@@ -16,57 +16,55 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class SignUpActivity : BaseActivity() {
+class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    override fun getViewBinding() = ActivitySignupBinding.inflate(layoutInflater)
+
     private lateinit var signUpViewModel: SignUpViewModel
-    private lateinit var signupBinding: ActivitySignupBinding
     private lateinit var gridLayoutManager: GridLayoutManager
     private val chronics = mutableListOf<Chronic>()
     private val selectedChronics = mutableListOf<Chronic>()
     private var calender: Calendar = Calendar.getInstance()
+    private val userId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        signupBinding = ActivitySignupBinding.inflate(layoutInflater)
-        setContentView(signupBinding.root)
+        binding = ActivitySignupBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         signUpViewModel = ViewModelProvider(this, viewModelFactory).get(SignUpViewModel::class.java)
 
-        signupBinding.cbHaveChronics.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbHaveChronics.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked)
-                signupBinding.rvChronics.visibility = View.VISIBLE
+                binding.rvChronics.visibility = View.VISIBLE
             else
-                signupBinding.rvChronics.visibility = View.GONE
+                binding.rvChronics.visibility = View.GONE
         }
 
         gridLayoutManager = GridLayoutManager(this, 4)
-        signupBinding.rvChronics.layoutManager = gridLayoutManager
+        binding.rvChronics.layoutManager = gridLayoutManager
 
         val chronic1 = Chronic(getString(R.string.hypertension), R.drawable.ic_hypertension, false)
-        val chronic2 = Chronic(getString(R.string.high_cholesterol), R.drawable.ic_high_cholesterol, false)
-        val chronic3 = Chronic(getString(R.string.ischemic_heart), R.drawable.ic_ischemic_heart, false)
+        val chronic2 = Chronic(
+            getString(R.string.chronic_obstructive_pulmonary_disease),
+            R.drawable.ic_high_cholesterol,
+            false
+        )
+        val chronic3 = Chronic(getString(R.string.cancer), R.drawable.ic_ischemic_heart, false)
         val chronic4 = Chronic(getString(R.string.diabetes), R.drawable.ic_diabetes, false)
-        val chronic5 = Chronic(getString(R.string.kidney_disease), R.drawable.ic_chronic_kidney, false)
+        val chronic5 =
+            Chronic(getString(R.string.kidney_disease), R.drawable.ic_chronic_kidney, false)
         val chronic6 = Chronic(getString(R.string.arthritis), R.drawable.ic_arthritis, false)
-        val chronic7 = Chronic(getString(R.string.obstructive_pulmonary), R.drawable.ic_obstructive_pulmonary, false)
-        val chronic8 = Chronic(getString(R.string.alzheimer), R.drawable.ic_alzheimer, false)
+        val chronic7 =
+            Chronic(getString(R.string.liver_disease), R.drawable.ic_obstructive_pulmonary, false)
+        val chronic8 = Chronic(getString(R.string.asthma), R.drawable.ic_inhaler, false)
         val chronic9 = Chronic(getString(R.string.depression), R.drawable.ic_depression, false)
-        val chronic10 = Chronic(getString(R.string.heart_disease), R.drawable.ic_heart_disease, false)
-
-        /*
-        2 chronic obstructive pulmonary disease
-        3 cancer
-        8
-        7
-	liver_disease
-	asthma
-
-	osteoporosis
-
-	other
-         */
+        val chronic10 =
+            Chronic(getString(R.string.heart_disease), R.drawable.ic_heart_disease, false)
+        val chronic11 = Chronic(getString(R.string.osteoporosis), R.drawable.ic_suppository, false)
+        val chronic12 = Chronic(getString(R.string.other), R.drawable.ic_suppository, false)
 
         chronics.add(chronic1)
         chronics.add(chronic2)
@@ -78,8 +76,11 @@ class SignUpActivity : BaseActivity() {
         chronics.add(chronic8)
         chronics.add(chronic9)
         chronics.add(chronic10)
+        chronics.add(chronic11)
+        chronics.add(chronic12)
 
-        signupBinding.rvChronics.adapter = SignUpAdapter(chronics) { chronic: Chronic ->
+
+        binding.rvChronics.adapter = SignUpAdapter(chronics) { chronic: Chronic ->
             selectChronic(chronic)
         }
 
@@ -93,29 +94,43 @@ class SignUpActivity : BaseActivity() {
             }
 
         // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
-        signupBinding.ivCalender.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(this,
+        binding.ivCalender.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                this,
                 dateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 calender.get(Calendar.YEAR),
                 calender.get(Calendar.MONTH),
-                calender.get(Calendar.DAY_OF_MONTH))
+                calender.get(Calendar.DAY_OF_MONTH)
+            )
             datePickerDialog.show()
         }
 
-        signupBinding.btnSignUp.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
+           /* signUpViewModel.signUp(
+                userId,
+                binding.tvDateOfBirth.text.toString(),
+                binding.etEmail.text.toString(),
+                binding.etFirstName.text.toString(),
+                binding.etLastName.text.toString(),
+
+            )
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
-            finish()
+            finish()*/
         }
 
-        signupBinding.tvLogin.setOnClickListener {
+        binding.tvLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
 
+  /*  isAlzheimer: Boolean, isArthritis: Boolean, isChronicKidney: Boolean, isDeleted: Boolean,
+    isDepression: Boolean, isDiabetes: Boolean, isHeartFailure: Boolean,
+    isHighCholesterol: Boolean, isHypertension: Boolean,
+    isIschemicHeart: Boolean, isObstructivePulmonary: Boolean */
 
     private fun selectChronic(chronic: Chronic) {
         if (chronic.isChecked)
@@ -127,7 +142,8 @@ class SignUpActivity : BaseActivity() {
     private fun updateDateInView() {
         val format = "dd/MM/yyyy" // mention the format you need
         val simpleDateFormat = SimpleDateFormat(format, Locale.US)
-        signupBinding.tvDateOfBirth.text = simpleDateFormat.format(calender.time)
+        binding.tvDateOfBirth.text = simpleDateFormat.format(calender.time)
     }
+
 
 }

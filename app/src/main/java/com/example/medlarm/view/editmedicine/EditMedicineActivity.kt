@@ -13,22 +13,21 @@ import com.example.medlarm.view.common.Medication
 import com.example.medlarm.view.home.HomeActivity
 import javax.inject.Inject
 
-class EditMedicineActivity : BaseActivity() {
+class EditMedicineActivity : BaseActivity<ActivityEditMedicineBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var editMedicineBinding: ActivityEditMedicineBinding
     private var gridLayoutManager: GridLayoutManager? = null
     private val medicationTypes = mutableListOf<Medication>()
 
+    override fun getViewBinding() = ActivityEditMedicineBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        editMedicineBinding = ActivityEditMedicineBinding.inflate(layoutInflater)
-        setContentView(editMedicineBinding.root)
+        setContentView(binding.root)
 
         gridLayoutManager = GridLayoutManager(this, 4)
-        editMedicineBinding.rvMedications.layoutManager = gridLayoutManager
+        binding.rvMedications.layoutManager = gridLayoutManager
 
         val medication1 = Medication(getString(R.string.tablet), R.drawable.ic_tablet, false)
         val medication2 = Medication(getString(R.string.capsule), R.drawable.ic_capsule, false)
@@ -52,18 +51,18 @@ class EditMedicineActivity : BaseActivity() {
         medicationTypes.add(medication7)
         medicationTypes.add(medication8)
 
-        editMedicineBinding.rvMedications.adapter =
+        binding.rvMedications.adapter =
             AddMedicineAdapter(medicationTypes) { medication: Medication ->
                 selectMedication(medication)
             }
 
-        editMedicineBinding.btnSaveChanges.setOnClickListener {
+        binding.btnSaveChanges.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        editMedicineBinding.btnCancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
@@ -71,17 +70,17 @@ class EditMedicineActivity : BaseActivity() {
     }
 
     private fun selectMedication(medication: Medication) {
-        editMedicineBinding.tvDoseType.text = medication.name
+        binding.tvDoseType.text = medication.name
         if( medication.name == "Tablet" || medication.name == "Capsule"
             || medication.name == "Liquid" || medication.name == "Drops" ){
-            editMedicineBinding.etDose.visibility = View.VISIBLE
-            editMedicineBinding.tvDose.visibility = View.VISIBLE
-            editMedicineBinding.tvDoseType.visibility = View.VISIBLE
+            binding.etDose.visibility = View.VISIBLE
+            binding.tvDose.visibility = View.VISIBLE
+            binding.tvDoseType.visibility = View.VISIBLE
         }
         else{
-            editMedicineBinding.etDose.visibility = View.GONE
-            editMedicineBinding.tvDose.visibility = View.GONE
-            editMedicineBinding.tvDoseType.visibility = View.GONE
+            binding.etDose.visibility = View.GONE
+            binding.tvDose.visibility = View.GONE
+            binding.tvDoseType.visibility = View.GONE
         }
     }
 }

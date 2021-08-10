@@ -10,29 +10,29 @@ import com.example.medlarm.view.common.BaseActivity
 import kotlin.properties.Delegates
 
 
-class ChooseLanguageActivity : BaseActivity() {
+class ChooseLanguageActivity : BaseActivity<ActivityChooseLanguageBinding>() {
 
-    lateinit var languageBinding: ActivityChooseLanguageBinding
     private var typeCheckedItem by Delegates.notNull<Int>()
     lateinit var currentLanguage : String
      private var newLanguage = ""
     //var currentSystemLocaleCode = ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0).language
 
+    override fun getViewBinding() = ActivityChooseLanguageBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        languageBinding = ActivityChooseLanguageBinding.inflate(layoutInflater)
-        setContentView(languageBinding.root)
+        setContentView(binding.root)
 
         currentLanguage =
             if(preferenceManager.getCurrentLocale() == "ar"){
-            languageBinding.rgChooseLanguage.check(R.id.rb_second_language)
+                binding.rgChooseLanguage.check(R.id.rb_second_language)
             "ar"
         } else{
-            languageBinding.rgChooseLanguage.check(R.id.rb_first_language)
+                binding.rgChooseLanguage.check(R.id.rb_first_language)
             "en"
         }
 
-        languageBinding.btnConfirm.setOnClickListener {
+        binding.btnConfirm.setOnClickListener {
             if( newLanguage != currentLanguage ){
                 currentLanguage = newLanguage
                 preferenceManager.setCurrentLocale(currentLanguage)

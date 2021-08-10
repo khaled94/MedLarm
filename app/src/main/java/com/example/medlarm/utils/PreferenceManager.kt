@@ -13,4 +13,11 @@ class PreferenceManager(context: Context) {
     fun setCurrentLocale(localeCode: String) {
         preferences.edit().putString("current_locale", localeCode).apply()
     }
+
+    fun setData(userId: Int?) {
+        with(preferences.edit()) {
+            putInt("user_id", userId!!)
+            apply()
+        }
+    }
 }

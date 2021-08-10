@@ -14,53 +14,51 @@ import com.example.medlarm.view.language.ChooseLanguageActivity
 import com.example.medlarm.view.login.LoginActivity
 import com.example.medlarm.view.signup.SignUpActivity
 
-
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var settingsBinding : ActivitySettingsBinding
+    override fun getViewBinding() = ActivitySettingsBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(settingsBinding.root)
+        setContentView(binding.root)
 
         if(preferenceManager.getCurrentLocale() == "ar")
-            settingsBinding.tvLanguage.text = getString(R.string.arabic)
+            binding.tvLanguage.text = getString(R.string.arabic)
         else
-            settingsBinding.tvLanguage.text = getString(R.string.english)
+            binding.tvLanguage.text = getString(R.string.english)
 
-        settingsBinding.ivEdit.setOnClickListener {
+        binding.ivEdit.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.ivAddProfile.setOnClickListener {
+        binding.ivAddProfile.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.tvLanguageText.setOnClickListener {
+        binding.tvLanguageText.setOnClickListener {
             val intent = Intent(this, ChooseLanguageActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.tvChangePasswordText.setOnClickListener {
+        binding.tvChangePasswordText.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.tvAbout.setOnClickListener {
+        binding.tvAbout.setOnClickListener {
             val intent = Intent(this, AboutUsActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.tvContactUs.setOnClickListener {
+        binding.tvContactUs.setOnClickListener {
             val intent = Intent(this, ContactUsActivity::class.java)
             startActivity(intent)
         }
 
-        settingsBinding.btnLogout.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

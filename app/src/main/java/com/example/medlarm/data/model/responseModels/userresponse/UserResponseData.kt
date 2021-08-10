@@ -1,7 +1,6 @@
-package com.example.medlarm.data.model.responseModels
+package com.example.medlarm.data.model.responseModels.userresponse
 
 data class UserResponseData(
-    val ConfirmPassword: String,
     val DateOfBirth: String,
     val Email: String,
     val Fname: String,

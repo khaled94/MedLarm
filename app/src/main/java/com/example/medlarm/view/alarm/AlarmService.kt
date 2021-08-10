@@ -13,13 +13,10 @@ import android.os.Vibrator
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import com.example.medlarm.R
 import com.example.medlarm.data.Constants.CHANNEL_ID
-import com.example.medlarm.databinding.WindowAlarmBinding
-import com.example.medlarm.view.login.LoginActivity
-import org.w3c.dom.Text
 import kotlin.properties.Delegates
 
 class AlarmService : Service() {
@@ -29,16 +26,14 @@ class AlarmService : Service() {
     private lateinit var mediaPlayer : MediaPlayer
     private lateinit var vibrator: Vibrator
     private var layoutType by Delegates.notNull<Int>()
-    lateinit var binding: WindowAlarmBinding
 
     override fun onCreate() {
         super.onCreate()
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val floatView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(R.layout.window_alarm, null)
-       // binding = WindowAlarmBinding.inflate(R.layout.window_alarm)
 
-        var texttest = floatView.findViewById(R.id.tv_time) as TextView
+        val close = floatView.findViewById(R.id.iv_cancel) as ImageView
         layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
@@ -57,20 +52,20 @@ class AlarmService : Service() {
         params.y = 0
         windowManager.addView(floatView, params)
 
-          texttest.setOnClickListener {
+        floatView.setOnClickListener {
             windowManager.removeView(floatView)
-            val intent = Intent(applicationContext, LoginActivity::class.java)
+            val intent = Intent(applicationContext, AlarmActivity::class.java)
             intent.flags = FLAG_ACTIVITY_NEW_TASK
             applicationContext.startActivity(intent)
             mediaPlayer.stop()
             vibrator.cancel()
         }
 
-        floatView.setOnClickListener {
+            close.setOnClickListener {
             windowManager.removeView(floatView)
-            val intent = Intent(applicationContext, AlarmActivity::class.java)
-            intent.flags = FLAG_ACTIVITY_NEW_TASK
-            applicationContext.startActivity(intent)
+            //val intent = Intent(applicationContext, LoginActivity::class.java)
+            //intent.flags = FLAG_ACTIVITY_NEW_TASK
+            //applicationContext.startActivity(intent)
             mediaPlayer.stop()
             vibrator.cancel()
         }

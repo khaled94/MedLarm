@@ -1,6 +1,6 @@
 package com.example.medlarm.data.model.requestModels
 
-data class SignInRequestBody(
+data class SignInRequest(
     val Email: String,
     val Password: String
 )

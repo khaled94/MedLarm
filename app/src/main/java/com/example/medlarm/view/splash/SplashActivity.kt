@@ -16,19 +16,20 @@ import com.example.medlarm.databinding.ActivitySplashBinding
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.login.LoginActivity
 
-class SplashActivity : BaseActivity() {
+class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
 
-    private lateinit var splashBinding : ActivitySplashBinding
     private val _splashTimeOut: Long = 2000
     private lateinit var handler: Handler
 
+    override fun getViewBinding() = ActivitySplashBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        splashBinding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(splashBinding.root)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
     val myFadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_fading)
-        splashBinding.ivLogo.startAnimation(myFadeInAnimation)
+        binding.ivLogo.startAnimation(myFadeInAnimation)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -55,10 +56,6 @@ class SplashActivity : BaseActivity() {
         else{
             navigateToLogin()
         }
-
-
-
-
                 //}
     }
 

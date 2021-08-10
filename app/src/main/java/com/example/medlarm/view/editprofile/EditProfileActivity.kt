@@ -11,36 +11,36 @@ import com.example.medlarm.view.common.Chronic
 import com.example.medlarm.view.settings.SettingsActivity
 import com.example.medlarm.view.userhistory.UserHistoryActivity
 
-class EditProfileActivity: BaseActivity() {
+class EditProfileActivity: BaseActivity<ActivityEditProfileBinding>() {
 
-    lateinit var editProfileBinding: ActivityEditProfileBinding
     lateinit var gridLayoutManager: GridLayoutManager
     private val chronics = mutableListOf<Chronic>()
     private val selectedChronics = mutableListOf<Chronic>()
 
+    override fun getViewBinding() = ActivityEditProfileBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        editProfileBinding = ActivityEditProfileBinding.inflate(layoutInflater)
-        setContentView(editProfileBinding.root)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        editProfileBinding.ivAddChronic.setOnClickListener {
-                editProfileBinding.rvChronics.visibility = View.VISIBLE
+        binding.ivAddChronic.setOnClickListener {
+            binding.rvChronics.visibility = View.VISIBLE
         }
 
         gridLayoutManager = GridLayoutManager(this, 4)
-        editProfileBinding.rvChronics.layoutManager = gridLayoutManager
+        binding.rvChronics.layoutManager = gridLayoutManager
 
         val chronic1 = Chronic(getString(R.string.hypertension), R.drawable.ic_hypertension, true)
         val chronic2 = Chronic(getString(R.string.high_cholesterol), R.drawable.ic_high_cholesterol, false)
         val chronic3 = Chronic(getString(R.string.ischemic_heart), R.drawable.ic_ischemic_heart, false)
         val chronic4 = Chronic(getString(R.string.diabetes), R.drawable.ic_diabetes, false)
-        val chronic5 = Chronic(getString(R.string.chronic_kidney), R.drawable.ic_chronic_kidney, true)
+        val chronic5 = Chronic(getString(R.string.kidney_disease), R.drawable.ic_chronic_kidney, true)
         val chronic6 = Chronic(getString(R.string.arthritis), R.drawable.ic_arthritis, false)
         val chronic7 = Chronic(getString(R.string.obstructive_pulmonary), R.drawable.ic_obstructive_pulmonary, false)
         val chronic8 = Chronic(getString(R.string.alzheimer), R.drawable.ic_alzheimer, false)
         val chronic9 = Chronic(getString(R.string.depression), R.drawable.ic_depression, false)
-        val chronic10 = Chronic(getString(R.string.heart_failure), R.drawable.ic_heart_failure, false)
+        val chronic10 = Chronic(getString(R.string.heart_disease), R.drawable.ic_heart_disease, false)
 
         selectedChronics.add(chronic1)
         selectedChronics.add(chronic5)
@@ -55,22 +55,22 @@ class EditProfileActivity: BaseActivity() {
         chronics.add(chronic9)
         chronics.add(chronic10)
 
-        editProfileBinding.rvChronics.adapter = EditProfileAdapter(chronics) { chronic: Chronic ->
+        binding.rvChronics.adapter = EditProfileAdapter(chronics) { chronic: Chronic ->
             selectChronic(chronic)
         }
 
-        editProfileBinding.tvUserHistory.setOnClickListener {
+        binding.tvUserHistory.setOnClickListener {
             val intent = Intent(this, UserHistoryActivity::class.java)
             startActivity(intent)
         }
 
-        editProfileBinding.btnSaveChanges.setOnClickListener {
+        binding.btnSaveChanges.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        editProfileBinding.btnCancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
             finish()

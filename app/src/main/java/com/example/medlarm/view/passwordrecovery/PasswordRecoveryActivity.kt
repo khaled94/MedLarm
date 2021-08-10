@@ -2,20 +2,22 @@ package com.example.medlarm.view.passwordrecovery
 
 import android.content.Intent
 import android.os.Bundle
+import com.example.medlarm.databinding.ActivityAboutUsBinding
+import com.example.medlarm.databinding.ActivityLoginBinding
 import com.example.medlarm.databinding.ActivityPasswordRecoveryBinding
 import com.example.medlarm.view.changepassword.ChangePasswordActivity
 import com.example.medlarm.view.common.BaseActivity
 
-class PasswordRecoveryActivity: BaseActivity() {
+class PasswordRecoveryActivity: BaseActivity<ActivityPasswordRecoveryBinding>() {
 
-    lateinit var passwordRecoveryBinding: ActivityPasswordRecoveryBinding
+    override fun getViewBinding() = ActivityPasswordRecoveryBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        passwordRecoveryBinding = ActivityPasswordRecoveryBinding.inflate(layoutInflater)
-        setContentView(passwordRecoveryBinding.root)
+        binding = ActivityPasswordRecoveryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        passwordRecoveryBinding.btnNext.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
             finish()

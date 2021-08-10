@@ -1,15 +1,17 @@
 package com.example.medlarm.view.alarm
 
 import android.os.Bundle
+import com.example.medlarm.databinding.ActivityAboutUsBinding
 import com.example.medlarm.databinding.ActivityAlarmBinding
 import com.example.medlarm.view.common.BaseActivity
 
-class AlarmActivity : BaseActivity() {
+class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
 
-    lateinit var binding: ActivityAlarmBinding
+    override fun getViewBinding() = ActivityAlarmBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
 }

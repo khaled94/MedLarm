@@ -13,6 +13,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+    <string name="user_id">User name</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
@@ -82,6 +83,12 @@
     <string name="confirm">Confirm</string>
     <string name="click">Click anywhere to open application</string>
     <string name="other">Other</string>
+    <string name="med" translatable="false">Med</string>
+    <string name="larm" translatable="false">Larm</string>
+    <string name="loading">loading</string>
+    <string name="wrong_username_password">Wrong Username Password</string>
+    <string name="network_error">Network Error</string>
+
     <string-array name="units">
         <item>Day</item>
         <item>Week</item>

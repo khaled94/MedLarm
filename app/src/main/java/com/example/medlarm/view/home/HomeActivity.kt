@@ -7,10 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medlarm.R
+import com.example.medlarm.databinding.ActivityAboutUsBinding
 import com.example.medlarm.databinding.ActivityHomeBinding
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
 import com.example.medlarm.view.alarm.AlarmActivity
@@ -25,12 +27,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     //  lateinit var loginViewModel: LoginViewModel
-    lateinit var homeBinding: ActivityHomeBinding
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val alarms = mutableListOf<Alarm>()
@@ -40,11 +41,12 @@ class HomeActivity : BaseActivity() {
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
 
+    override fun getViewBinding() = ActivityHomeBinding.inflate(layoutInflater)
+
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeBinding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(homeBinding.root)
+        setContentView(binding.root)
 
         // Creating the pending intent to send to the BroadcastReceiver
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -64,7 +66,6 @@ class HomeActivity : BaseActivity() {
              AlarmManager.INTERVAL_DAY,
              pendingIntent
          )*/
-
         alarmManager.set(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -72,7 +73,7 @@ class HomeActivity : BaseActivity() {
         )
 
         linearLayoutManager = LinearLayoutManager(this)
-        homeBinding.rvAlarms.layoutManager = linearLayoutManager
+        binding.rvAlarms.layoutManager = linearLayoutManager
 //        loginViewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         calendar.time = Date()
@@ -80,7 +81,7 @@ class HomeActivity : BaseActivity() {
         val mFormat = SimpleDateFormat("MMM yyyy")
 
         val currentDate = mFormat.format(Date())
-        homeBinding.tvCurrentMonth.text = currentDate
+        binding.tvCurrentMonth.text = currentDate
 
         val startDate = Calendar.getInstance()
         startDate.add(Calendar.DAY_OF_MONTH, 0)
@@ -96,7 +97,7 @@ class HomeActivity : BaseActivity() {
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDateSelected(date: Calendar?, position: Int) {
-                homeBinding.tvCurrentMonth.text = mFormat.format(date?.timeInMillis)
+                binding.tvCurrentMonth.text = mFormat.format(date?.timeInMillis)
             }
         }
 
@@ -108,21 +109,21 @@ class HomeActivity : BaseActivity() {
         alarms.add(alarm2)
         alarms.add(alarm3)
 
-        homeBinding.rvAlarms.adapter = HomeAdapter(alarms) { alarm: Alarm ->
+        binding.rvAlarms.adapter = HomeAdapter(alarms) { alarm: Alarm ->
             selectAlarm(alarm)
         }
 
-        homeBinding.ivSetting.setOnClickListener {
+        binding.ivSetting.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
 
-        homeBinding.btnAddAlarmFull.setOnClickListener {
+        binding.btnAddAlarmFull.setOnClickListener {
             val intent = Intent(this, AddMedicineActivity::class.java)
             startActivity(intent)
         }
 
-        homeBinding.btnAddAlarmEmpty.setOnClickListener {
+        binding.btnAddAlarmEmpty.setOnClickListener {
             val intent = Intent(this, AddMedicineActivity::class.java)
             startActivity(intent)
         }

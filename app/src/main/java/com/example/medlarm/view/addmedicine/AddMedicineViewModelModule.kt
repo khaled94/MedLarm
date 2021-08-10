@@ -11,6 +11,6 @@ import dagger.multibindings.IntoMap
 abstract class AddMedicineViewModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(SignUpViewModel::class)
-    abstract fun bindsAddAlarmViewModel(addAlarmViewModel: AddMedicineViewModel): ViewModel
+    @ViewModelKey(AddMedicineViewModel::class)
+    abstract fun bindsAddMedicineViewModel(addMedicine: AddMedicineViewModel): ViewModel
 }

@@ -1,8 +1,8 @@
 package com.example.medlarm.data.model.responseModels
 
-data class UserResponse(
+data class UpdateAlarmResponse(
     val Code: String,
-    val Msg: String,
     val Status: String,
-    val userResponseData: UserResponseData
+    val Msg: String,
+    val Data: Int
 )
