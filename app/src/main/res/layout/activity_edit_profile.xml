@@ -283,24 +283,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_chronic"
                 tools:listitem="@layout/chronic_item" />
 
-            <TextView
-                android:id="@+id/tv_user_history"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_14ssp"
-                android:text="@string/profile_history"
-                android:textColor="@color/colorPrimary"
-                android:background="@drawable/edit_text_background"
-                android:backgroundTint="@color/faded_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:padding="@dimen/_10sdp"
-                android:paddingStart="@dimen/_20sdp"
-                android:fontFamily="@font/montserrat_semi_bold"
-                app:layout_constraintTop_toBottomOf="@id/rv_chronics"
-                app:layout_constraintStart_toStartOf="@id/tv_chronic"
-                app:layout_constraintEnd_toEndOf="@id/tv_chronic"
-                tools:ignore="RtlSymmetry" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save_changes"
                 android:layout_width="0dp"
@@ -315,7 +297,7 @@
                 android:textAllCaps="false"
                 app:layout_constraintStart_toStartOf="@id/et_height"
                 app:layout_constraintEnd_toEndOf="@id/et_weight"
-                app:layout_constraintTop_toBottomOf="@id/tv_user_history" />
+                app:layout_constraintTop_toBottomOf="@id/rv_chronics" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"

@@ -2,10 +2,7 @@ package com.example.medlarm.di
 
 import android.app.Application
 import com.example.medlarm.app.MedLarm
-import com.example.medlarm.datasource.modules.HttpModule
-import com.example.medlarm.datasource.modules.RepositoryModule
-import com.example.medlarm.datasource.modules.RetrofitModule
-import com.example.medlarm.datasource.modules.ServiceModule
+import com.example.medlarm.datasource.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -22,7 +19,8 @@ import javax.inject.Singleton
         HttpModule::class,
         RetrofitModule::class,
         ServiceModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        DataBaseModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MedLarm> {

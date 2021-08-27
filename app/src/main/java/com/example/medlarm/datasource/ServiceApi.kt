@@ -15,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import java.util.*
 
 interface ServiceApi {
 
@@ -34,7 +35,7 @@ interface ServiceApi {
     fun login(@Body body: SignInRequest): Single<UserResponse>
 
     @POST("/ChangePassword")
-    fun changePassword(): Single<ChangePasswordResponse>
+    fun changePassword(@Body body: ChangePasswordRequest): Single<ChangePasswordResponse>
 
     @GET("/GetLookups")
     fun getLookups(): Single<LookupsResponse>
@@ -46,29 +47,32 @@ interface ServiceApi {
     fun getMedicineListByCategory(@Path("categoryId") categoryId: Int): Single<MedicinesList>
 
     @POST("PostFreqIntakeAndPatientAlarm")
-    fun addMedicine(@Body body : AddMedicineRequest): Single<AddMedicineResponse>
+    fun addMedicine(@Body body: AddMedicineRequest): Single<AddMedicineResponse>
 
-    @POST("GetFreqIntakeAndPatientAlarm/{UserId}")
-    fun getAlarmList(): Single<AlarmListResponse>
+    @POST("GetFreqIntakeAndPatientAlarm/{userId}")
+    fun getAlarmList(@Path("userId") userId: Int): Single<AlarmListResponse>
 
-    @GET("GetUserHistory/{UserId}")
-    fun getUserHistory(): Single<UserHistoryResponse>
+    @GET("GetUserHistory/{userId}")
+    fun getUserHistory(@Path("userId") userId: Int): Single<UserHistoryResponse>
 
-    @GET("PatientAlarmsByDate/{UserId}/{Date}")
-    fun getAlarmByDate(): Single<AlarmByDateResponse>
+    @GET("PatientAlarmsByDate/{userId}/{date}")
+    fun getAlarmByDate(
+        @Path("userId") userId: Int,
+        @Path("date") date: Date
+    ): Single<AlarmByDateResponse>
 
     @POST("UpdateTakenAlarms")
-    fun updateTakenAlarm(@Body body : TakenAlarmList): Single<UpdateTakenAlarmResponse>
+    fun updateTakenAlarm(@Body body: TakenAlarmList): Single<UpdateTakenAlarmResponse>
 
     @POST("RemoveAlarm/{AlarmId}")
-    fun removeAlarm(): Single<RemoveAlarmResponse>
+    fun removeAlarm(@Path("alarmId") alarmId: Int): Single<RemoveAlarmResponse>
 
     @POST("UpdateFrequentIntake")
-    fun updateAlarm(@Body body : UpdateAlarmRequest): Single<UpdateAlarmResponse>
+    fun updateAlarm(@Body body: UpdateAlarmRequest): Single<UpdateAlarmResponse>
 
     @POST("GetFreqIntake/{AlarmId}")
-    fun getAlarmDetails(): Single<AlarmDetails>
+    fun getAlarmDetails(@Path("alarmId") alarmId: Int): Single<AlarmDetails>
 
     @POST("GetUser/{UserId}")
-    fun getUserProfile(): Single<UserProfileResponse>
+    fun getUserProfile(@Path("userId") userId: Int): Single<UserProfileResponse>
 }

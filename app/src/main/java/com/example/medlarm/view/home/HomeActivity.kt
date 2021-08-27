@@ -7,12 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medlarm.R
-import com.example.medlarm.databinding.ActivityAboutUsBinding
 import com.example.medlarm.databinding.ActivityHomeBinding
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
 import com.example.medlarm.view.alarm.AlarmActivity
@@ -24,6 +22,8 @@ import com.example.medlarm.view.settings.SettingsActivity
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    //  lateinit var loginViewModel: LoginViewModel
+    lateinit var homeViewModel: HomeViewModel
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val alarms = mutableListOf<Alarm>()
@@ -43,21 +43,32 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     override fun getViewBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val date = format.parse(Calendar.getInstance().time.toString())
+        homeViewModel.getAlarmByDate(preferenceManager.getUserId(), date)
 
         // Creating the pending intent to send to the BroadcastReceiver
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val receiverIntent = Intent(this, Receiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, receiverIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = PendingIntent.getBroadcast(
+            this,
+            REQUEST_CODE,
+            receiverIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         // Setting the specific time for the alarm manager to trigger the intent, in this example, the alarm is set to go off at 23:30, update the time according to your need
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
-        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY))
-        calendar.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE)+1)
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1)
 
         // Starts the alarm manager
         /* alarmManager.setRepeating(
@@ -79,7 +90,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
         val mFormat = SimpleDateFormat("MMM yyyy")
-
         val currentDate = mFormat.format(Date())
         binding.tvCurrentMonth.text = currentDate
 
@@ -101,13 +111,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             }
         }
 
-        val alarm1 = Alarm("panadol", "once", false, "",null,null)
-        val alarm2 = Alarm("decl", "once", false, "",null,null)
-        val alarm3 = Alarm("moov", "twice", false, "",null,null)
+        /* val alarm1 = Alarm("panadol", "once", false, "",null,null)
+         val alarm2 = Alarm("decl", "once", false, "",null,null)
+         val alarm3 = Alarm("moov", "twice", false, "",null,null)
 
-        alarms.add(alarm1)
-        alarms.add(alarm2)
-        alarms.add(alarm3)
+         alarms.add(alarm1)
+         alarms.add(alarm2)
+         alarms.add(alarm3)*/
 
         binding.rvAlarms.adapter = HomeAdapter(alarms) { alarm: Alarm ->
             selectAlarm(alarm)
@@ -146,6 +156,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             }
         }
 
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun dateSent(date: String): String? {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        return sdf.format(date)
     }
 
 }

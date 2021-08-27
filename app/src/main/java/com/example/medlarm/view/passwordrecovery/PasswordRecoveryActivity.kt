@@ -2,8 +2,6 @@ package com.example.medlarm.view.passwordrecovery
 
 import android.content.Intent
 import android.os.Bundle
-import com.example.medlarm.databinding.ActivityAboutUsBinding
-import com.example.medlarm.databinding.ActivityLoginBinding
 import com.example.medlarm.databinding.ActivityPasswordRecoveryBinding
 import com.example.medlarm.view.changepassword.ChangePasswordActivity
 import com.example.medlarm.view.common.BaseActivity

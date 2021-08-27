@@ -1,9 +1,11 @@
 package com.example.medlarm.view.addmedicine
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.SearchManager
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
@@ -17,10 +19,15 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medlarm.R
+import com.example.medlarm.data.model.responseModels.medicineslist.MedicinesListItem
 import com.example.medlarm.databinding.ActivityAddMedicineBinding
+import com.example.medlarm.utils.ErrorEntity
+import com.example.medlarm.utils.State
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.common.Medication
+import com.example.medlarm.view.home.HomeActivity
 import com.simplemobiletools.commons.extensions.hideKeyboard
+import com.simplemobiletools.commons.extensions.toInt
 import com.simplemobiletools.commons.extensions.toast
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,10 +45,13 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
     private val medicationTypes = mutableListOf<Medication>()
     private var calender: Calendar = Calendar.getInstance()
     private val today: Long = Calendar.getInstance().timeInMillis
+    var medications: ArrayList<MedicinesListItem> = arrayListOf()
     var isStartDayToday: Boolean = false
     var startYear by Delegates.notNull<Int>()
     var startMonth by Delegates.notNull<Int>()
     var startDay by Delegates.notNull<Int>()
+
+    var medicationId = 1
 
     override fun getViewBinding() = ActivityAddMedicineBinding.inflate(layoutInflater)
 
@@ -53,14 +63,14 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
         gridLayoutManager = GridLayoutManager(this, 4)
         binding.rvMedications.layoutManager = gridLayoutManager
 
-        val medication1 = Medication(getString(R.string.tablet), R.drawable.ic_tablet, false)
-        val medication2 = Medication(getString(R.string.capsule), R.drawable.ic_capsule, false)
-        val medication3 = Medication(getString(R.string.liquid), R.drawable.ic_cough_syrup, false)
-        val medication4 = Medication(getString(R.string.drops), R.drawable.ic_drop, false)
-        val medication5 = Medication(getString(R.string.injection), R.drawable.ic_drugs, false)
-        val medication6 = Medication(getString(R.string.inhaler), R.drawable.ic_inhaler, false)
-        val medication7 = Medication(getString(R.string.topical), R.drawable.ic_topical, false)
-        val medication8 = Medication(getString(R.string.other), R.drawable.ic_suppository, false)
+        val medication1 = Medication(31,getString(R.string.tablet), R.drawable.ic_tablet, false)
+        val medication2 = Medication(2,getString(R.string.capsule), R.drawable.ic_capsule, false)
+        val medication3 = Medication(16,getString(R.string.liquid), R.drawable.ic_cough_syrup, false)
+        val medication4 = Medication(4,getString(R.string.drops), R.drawable.ic_drop, false)
+        val medication5 = Medication(14,getString(R.string.injection), R.drawable.ic_drugs, false)
+        val medication6 = Medication(13,getString(R.string.inhaler), R.drawable.ic_inhaler, false)
+        val medication7 = Medication(33,getString(R.string.topical), R.drawable.ic_topical, false)
+        val medication8 = Medication(36,getString(R.string.other), R.drawable.ic_suppository, false)
 
         medicationTypes.add(medication1)
         medicationTypes.add(medication2)
@@ -83,8 +93,9 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
         //val medication = arrayOf<String?>("Panadol", "Moov", "Decl")
-        val newMedications = listOf("Panadol", "Moov", "Decl")
+        //val newMedications = listOf("Panadol", "Moov", "Decl")
         //val adpater = CursorAdapter(this, null , R.layout.medicine_name_item)
+
         binding.svMedicationName.suggestionsAdapter = cursorAdapter
 
         binding.svMedicationName.setOnQueryTextListener(object :
@@ -102,12 +113,15 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                         SearchManager.SUGGEST_COLUMN_TEXT_1
                     )
                 )
+                var medicationNames = medications.map {  it.Name  }
                 query?.let {
-                    newMedications.forEachIndexed { index, medication ->
+                    medicationNames.forEachIndexed { index, medication ->
                         if (medication.contains(query, true))
                             cursor.addRow(arrayOf(index, medication))
                         Log.e("medication", medication)
-                    }
+                        val myMedication: MedicinesListItem? = medications.find { it.Name == medication}
+                        medicationId = myMedication!!.Id
+                        }
                 }
                 cursorAdapter.changeCursor(cursor)
                 return true
@@ -198,11 +212,12 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                 calender.get(Calendar.MINUTE), true
             )
             timePickerDialog.show()
+            timePickerDialog.onWindowFocusChanged(true)
         }
 
         binding.tvIntakeUnit.setOnClickListener {
             lateinit var dialog: AlertDialog
-            val choiceList = arrayOf("Daily", "weekly", "monthly", "sunday", "monday")
+            val choiceList = arrayOf("daily", "weekly", "monthly")
             val checkedList = booleanArrayOf(false, false, false, false, false)
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Choose")
@@ -239,12 +254,33 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             dialog.show()
         }
 
-        /*  binding.btnAddAlarm.setOnClickListener {
-              addMedicineViewModel.login(
-                  binding.etUsername.text.toString(),
-                  binding.etPassword.text.toString()
+        binding.btnAddAlarm.setOnClickListener {
+            var frequencyType = -1
+            var durationType = -1
+
+            when {
+                binding.tvIntakeUnit.text.toString() == "daily" -> frequencyType = 1
+                binding.tvIntakeUnit.text.toString() == "weekly" -> frequencyType = 2
+                binding.tvIntakeUnit.text.toString() == "monthly" -> frequencyType = 3
+            }
+
+            when {
+                binding.etDuration.text.toString() == "daily" -> durationType = 1
+                binding.etDuration.text.toString() == "weekly" -> durationType = 2
+                binding.etDuration.text.toString() == "monthly" -> durationType = 3
+            }
+              addMedicineViewModel.addMedicine(
+                  medicationId,
+                  preferenceManager.getUserId(),
+                  binding.etIntakeFrequency.text.toInt(),
+                  frequencyType,
+                  binding.etDuration.text.toInt(),
+                  durationType,
+                  dateSent(binding.tvStartDate.text.toString())!!,
+                  binding.tvStartTime.text.toString()
               )
-          }*/
+          }
+        observeOnAlarmAdded()
     }
 
     private fun selectMedication(medication: Medication) {
@@ -261,6 +297,167 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             binding.tvDose.visibility = View.GONE
             binding.tvDoseType.visibility = View.GONE
         }
+        addMedicineViewModel.getMedicineList(medication.id)
+        observeOnMedicineList()
+    }
+
+    private fun observeOnAlarmAdded() {
+        addMedicineViewModel.addMedicineResult.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.Status == "Done") {
+                        /*Toast.makeText(
+                            this,
+                            "alarm added",
+                            Toast.LENGTH_SHORT
+                        ).show()*/
+                        addMedicineViewModel.getAlarms(preferenceManager.getUserId())
+                        observeOnMedicineList()
+
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.wrong_username_password),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+    }
+
+    private fun observeOnAlarmList() {
+        addMedicineViewModel.alarmList.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.isNotEmpty()) {
+                        /*Toast.makeText(
+                            this,
+                            "alarm added",
+                            Toast.LENGTH_SHORT
+                        ).show()*/
+
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.wrong_username_password),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+    }
+
+    private fun observeOnMedicineList() {
+        addMedicineViewModel.medicineList.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.isNotEmpty()) {
+                        medications = it.data
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.wrong_username_password),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
     }
 
     private fun updateDateInView() {
@@ -273,6 +470,13 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
         val format = "HH:mm" // mention the format you need
         val sdf = SimpleDateFormat(format, Locale.US)
         binding.tvStartTime.text = sdf.format(calender.time)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun dateSent(date : String): String? {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        Log.e("date",calender.time.toString())
+        return sdf.format(date)
     }
 }
 

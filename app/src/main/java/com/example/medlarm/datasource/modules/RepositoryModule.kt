@@ -3,6 +3,7 @@ package com.example.medlarm.datasource.modules
 import android.content.SharedPreferences
 import com.example.medlarm.datasource.ServiceApi
 import com.example.medlarm.datasource.repository.*
+import com.example.medlarm.datasource.room.DAOAccess
 import com.example.medlarm.di.DI
 import com.example.medlarm.utils.ErrorHandler
 import dagger.Module
@@ -22,8 +23,8 @@ class RepositoryModule {
     @Provides
     @Singleton
     @Named(DI.LOCAL_DATA_SOURCE)
-    fun provideLocalDataSource(serviceApi: ServiceApi): DataSource =
-    LocalDataSource(serviceApi = serviceApi)
+    fun provideLocalDataSource(daoAccess: DAOAccess): DataSource =
+    LocalDataSource(daoAccess = daoAccess)
 
     @Singleton
     @Provides

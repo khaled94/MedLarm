@@ -29,7 +29,7 @@ class AlarmService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+      /*  val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val floatView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(R.layout.window_alarm, null)
 
@@ -72,13 +72,13 @@ class AlarmService : Service() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.eraser)
         mediaPlayer.isLooping = true
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator*/
         //notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val notificationIntent = Intent(this, RingActivity::class.java)
+   // override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+     /*   val notificationIntent = Intent(this, RingActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmTitle = String.format("%s Alarm", intent.getStringExtra("Title"))
@@ -108,15 +108,15 @@ class AlarmService : Service() {
             stopForeground(STOP_FOREGROUND_REMOVE)
         }
         return START_STICKY
-    }
+    }*/
 
-    override fun onDestroy() {
+  /*  override fun onDestroy() {
         super.onDestroy()
         // notificationManager.cancel(1)
          mediaPlayer.stop()
          vibrator.cancel()
     }
-
+*/
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }

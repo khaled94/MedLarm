@@ -29,18 +29,14 @@ class EditMedicineActivity : BaseActivity<ActivityEditMedicineBinding>() {
         gridLayoutManager = GridLayoutManager(this, 4)
         binding.rvMedications.layoutManager = gridLayoutManager
 
-        val medication1 = Medication(getString(R.string.tablet), R.drawable.ic_tablet, false)
-        val medication2 = Medication(getString(R.string.capsule), R.drawable.ic_capsule, false)
-        val medication3 = Medication(getString(R.string.liquid), R.drawable.ic_cough_syrup, false)
-        val medication4 = Medication(getString(R.string.drops), R.drawable.ic_drop, false)
-        val medication5 = Medication(getString(R.string.injection), R.drawable.ic_drugs, false)
-        val medication6 = Medication(getString(R.string.inhaler), R.drawable.ic_inhaler, false)
-        val medication7 = Medication(
-            getString(R.string.suppository),
-            R.drawable.ic_suppository,
-            false
-        )
-        val medication8 = Medication(getString(R.string.topical), R.drawable.ic_topical, false)
+        val medication1 = Medication(31,getString(R.string.tablet), R.drawable.ic_tablet, false)
+        val medication2 = Medication(2,getString(R.string.capsule), R.drawable.ic_capsule, false)
+        val medication3 = Medication(16,getString(R.string.liquid), R.drawable.ic_cough_syrup, false)
+        val medication4 = Medication(4,getString(R.string.drops), R.drawable.ic_drop, false)
+        val medication5 = Medication(14,getString(R.string.injection), R.drawable.ic_drugs, false)
+        val medication6 = Medication(13,getString(R.string.inhaler), R.drawable.ic_inhaler, false)
+        val medication7 = Medication(33,getString(R.string.topical), R.drawable.ic_topical, false)
+        val medication8 = Medication(36,getString(R.string.other), R.drawable.ic_suppository, false)
 
         medicationTypes.add(medication1)
         medicationTypes.add(medication2)

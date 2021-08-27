@@ -12,6 +12,7 @@ import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.common.Chronic
 import com.example.medlarm.view.home.HomeActivity
 import com.example.medlarm.view.login.LoginActivity
+import com.simplemobiletools.commons.extensions.toInt
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -26,9 +27,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var gridLayoutManager: GridLayoutManager
     private val chronics = mutableListOf<Chronic>()
-    private val selectedChronics = mutableListOf<Chronic>()
+    private val selectedChronics = mutableListOf<Boolean>()
     private var calender: Calendar = Calendar.getInstance()
-    private val userId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,15 +107,30 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
         }
 
         binding.btnSignUp.setOnClickListener {
-           /* signUpViewModel.signUp(
-                userId,
-                binding.tvDateOfBirth.text.toString(),
-                binding.etEmail.text.toString(),
-                binding.etFirstName.text.toString(),
-                binding.etLastName.text.toString(),
+        /*    signUpViewModel.signUp(
+                0,
+                binding.etFirstName.toString(),
+                binding.etLastName.toString(),
+                binding.etEmail.toString(),
+                binding.tvDateOfBirth.toString(),
+                binding.etHeight.toInt(),
+                binding.etWeight.toInt(),
+                binding.etPassword.toInt(),
+                binding.etConfirmPassword.toInt(),
+                binding.,
+                    IsHighCholesterol,
+                    IsIschemicHeart,
+                    IsDiabetes,
+                    IsChronicKidney,
+                    IsArthritis,
+                    IsObstructivePulmonary,
+                    IsAlzheimer,
+                    IsDepression,
+                    IsHeartFailure,
+                    IsDeleted
 
-            )
-            val intent = Intent(this, HomeActivity::class.java)
+            )*/
+           /* val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()*/
         }
@@ -127,14 +142,29 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
         }
     }
 
-  /*  isAlzheimer: Boolean, isArthritis: Boolean, isChronicKidney: Boolean, isDeleted: Boolean,
-    isDepression: Boolean, isDiabetes: Boolean, isHeartFailure: Boolean,
-    isHighCholesterol: Boolean, isHypertension: Boolean,
-    isIschemicHeart: Boolean, isObstructivePulmonary: Boolean */
+  /*  IsHighCholesterol, IsIschemicHeart,  IsDiabetes,IsChronicKidney, IsArthritis,
+    IsObstructivePulmonary, IsAlzheimer,  IsDepression,  IsHeartFailure, IsDeleted */
 
     private fun selectChronic(chronic: Chronic) {
-        if (chronic.isChecked)
-            selectedChronics.add(chronic)
+        if (chronic.isChecked){
+            if(chronic.name == "Hypertension")
+                selectedChronics[0] = true
+            if(chronic.name == "HighCholesterol")
+                selectedChronics[1] = true
+            if(chronic.name == "Hypertension")
+                selectedChronics[2] = true
+            if(chronic.name == "Hypertension")
+                selectedChronics[3] = true
+            if(chronic.name == "Hpertension")
+                selectedChronics[4] = true
+            if(chronic.name == "Hypertension")
+                selectedChronics[5] = true
+            if(chronic.name == "Hypertension")
+                selectedChronics[6] = true
+            if(chronic.name == "Hypertension")
+                selectedChronics[7] = true
+        }
+
         else
             selectedChronics.remove(chronic)
     }

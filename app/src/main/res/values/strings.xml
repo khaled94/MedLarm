@@ -92,6 +92,7 @@
     <string-array name="units">
         <item>Day</item>
         <item>Week</item>
+        <item>Month</item>
     </string-array>
     <string-array name="Languages">
         <item>English</item>

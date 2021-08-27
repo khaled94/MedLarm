@@ -18,7 +18,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var loginViewModel: LoginViewModel
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun getViewBinding() = ActivityLoginBinding.inflate(layoutInflater)
 
@@ -32,6 +32,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 binding.etUsername.text.toString(),
                 binding.etPassword.text.toString()
             )
+
         }
 
         binding.tvForgetPassword.setOnClickListener {
@@ -56,7 +57,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 is State.Success -> {
                     dialog.dismiss()
                     if (it.data.Status == "Done") {
-                        preferenceManager.setData(userId = it.data.userResponseData.Id)
+                        preferenceManager.setUserId(userId = it.data.userResponseData.Id)
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
