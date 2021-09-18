@@ -8,5 +8,7 @@ data class AlarmByDateResponseItem(
     val FrequentlyIntakeNo: Int,
     val IntakeCount: Int,
     val FrequentlyIntakeType: String,
-    val isTaken: Boolean
+    val isTaken: Boolean,
+    var showOptions: Boolean = false,
+    var action: String = ""
 )

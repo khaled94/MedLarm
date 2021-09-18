@@ -5,8 +5,8 @@ import java.util.*
 data class AlarmListResponseItem(
     val Id: Int,
     val MedicineName: String,
-    val Date: Date,
-    val Time: Date,
+    val Date: String,
+    val Time: String,
     val FrequentlyIntakeNo: Int,
     val IntakeCount: Int,
     val FrequentlyIntakeType: String,

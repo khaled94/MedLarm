@@ -1,15 +1,16 @@
 package com.example.medlarm.view.home
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
-import com.example.medlarm.data.model.requestModels.SignInRequest
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
-import com.example.medlarm.data.model.responseModels.userresponse.UserResponse
+import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
+import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponse
+import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponseItem
 import com.example.medlarm.datasource.repository.Repository
 import com.example.medlarm.utils.BaseSchedulerProvider
 import com.example.medlarm.utils.BaseViewModel
 import com.example.medlarm.utils.ErrorHandler
 import com.example.medlarm.utils.State
-import java.util.*
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -18,15 +19,36 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel(baseSchedulerProvider = baseSchedulerProvider) {
 
     private val errorHandler: ErrorHandler = ErrorHandler()
-    val alarms = MutableLiveData<State<AlarmByDateResponse>>()
+    val alarmByDateList = MutableLiveData<State<List<AlarmByDateResponseItem>>>()
+    val remoteAlarmList = MutableLiveData<State<AlarmListResponse>>()
+    val localAlarmList = MutableLiveData<List<AlarmListResponseItem>>()
 
-    fun getAlarmByDate(userId: Int,date: Date) {
+    fun getAlarmByDate(userId: Int,date: String) {
         execute(loadingConsumer = {
-            alarms.postValue(State.Loading)
+            alarmByDateList.postValue(State.Loading)
         }, successConsumer = {
-            alarms.postValue(it)
+            alarmByDateList.postValue(it)
         }, throwableConsumer = {
-            alarms.postValue(State.Error(exception = errorHandler.getError(it)))
+            alarmByDateList.postValue(State.Error(exception = errorHandler.getError(it)))
         }, useCase = repository.getAlarmByDate(userId,date))
+    }
+
+    fun getAlarms(userId: Int){
+        execute(loadingConsumer = {
+            remoteAlarmList.postValue(State.Loading)
+        }, successConsumer = {
+            remoteAlarmList.postValue(it)
+        }, throwableConsumer = {
+            remoteAlarmList.postValue(State.Error(exception = errorHandler.getError(it)))
+        }, useCase = repository.getAlarmList(userId))
+    }
+
+    @SuppressLint("CheckResult")
+    fun addAlarmsToDatabase(){
+        repository.getAlarmsFromDatabase().doOnSuccess {
+            localAlarmList.value = it
+        }.doOnError {
+
+        }
     }
 }

@@ -25,7 +25,6 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<MedLarm> {
 
-
     @Component.Builder
     interface Builder {
 

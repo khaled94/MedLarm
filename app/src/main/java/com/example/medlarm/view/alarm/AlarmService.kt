@@ -1,5 +1,6 @@
 package com.example.medlarm.view.alarm
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.os.Vibrator
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import com.example.medlarm.R
@@ -27,13 +29,17 @@ class AlarmService : Service() {
     private lateinit var vibrator: Vibrator
     private var layoutType by Delegates.notNull<Int>()
 
+
     override fun onCreate() {
         super.onCreate()
-      /*  val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val floatView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(R.layout.window_alarm, null)
 
+        val taken = floatView.findViewById(R.id.btn_taken) as Button
+        val snooze = floatView.findViewById(R.id.btn_snooze) as Button
         val close = floatView.findViewById(R.id.iv_cancel) as ImageView
+
         layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
@@ -61,7 +67,17 @@ class AlarmService : Service() {
             vibrator.cancel()
         }
 
-            close.setOnClickListener {
+        taken.setOnClickListener {
+            windowManager.removeView(floatView)
+            //val intent = Intent(applicationContext, AlarmActivity::class.java)
+            //intent.flags = FLAG_ACTIVITY_NEW_TASK
+            //applicationContext.startActivity(intent)
+
+            mediaPlayer.stop()
+            vibrator.cancel()
+        }
+
+        close.setOnClickListener {
             windowManager.removeView(floatView)
             //val intent = Intent(applicationContext, LoginActivity::class.java)
             //intent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -72,13 +88,14 @@ class AlarmService : Service() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.eraser)
         mediaPlayer.isLooping = true
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator*/
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         //notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
 
-   // override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-     /*   val notificationIntent = Intent(this, RingActivity::class.java)
+    @SuppressLint("UnspecifiedImmutableFlag")
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        val notificationIntent = Intent(this, RingActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmTitle = String.format("%s Alarm", intent.getStringExtra("Title"))
@@ -108,15 +125,15 @@ class AlarmService : Service() {
             stopForeground(STOP_FOREGROUND_REMOVE)
         }
         return START_STICKY
-    }*/
+    }
 
-  /*  override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         // notificationManager.cancel(1)
          mediaPlayer.stop()
          vibrator.cancel()
     }
-*/
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }

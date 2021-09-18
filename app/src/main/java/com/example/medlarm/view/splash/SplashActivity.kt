@@ -15,6 +15,7 @@ import com.example.medlarm.R
 import com.example.medlarm.databinding.ActivitySplashBinding
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.login.LoginActivity
+import java.util.*
 
 class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
 
@@ -30,6 +31,9 @@ class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
 
     val myFadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_fading)
         binding.ivLogo.startAnimation(myFadeInAnimation)
+
+        if(preferenceManager.getUserId() != 0)
+                                         navigateToLogin()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -59,10 +63,12 @@ class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
                 //}
     }
 
-    fun navigateToLogin(){
+    private fun navigateToLogin(){
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed(
             {
+                //calendar.timeInMillis,
+                setAlarm(Calendar.getInstance().timeInMillis,-3)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()

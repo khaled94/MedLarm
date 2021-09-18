@@ -108,7 +108,6 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="viewStart"
                     android:textSize="@dimen/_12ssp"
-                    android:text="@string/date_of_birth"
                     android:textColor="@color/colorPrimary"
                     android:background="@drawable/edit_text_background"
                     android:backgroundTint="@color/faded_light_blue"

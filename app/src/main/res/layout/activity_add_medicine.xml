@@ -144,11 +144,10 @@
             android:textAlignment="viewStart"
             android:inputType="number"
             android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat_semi_bold"
             android:textColor="@color/grey"
-            android:autofillHints="@string/first_name"
             android:background="@drawable/unselected_medication"
             android:backgroundTint="@color/light_grey"
-            android:fontFamily="@font/montserrat_semi_bold"
             android:padding="@dimen/_10sdp"
             android:paddingStart="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_10sdp"
@@ -186,25 +185,9 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.6" />
 
-        <TextView
-            android:id="@+id/tv_intake_unit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text ="choose"
-            android:textAlignment="viewStart"
-            android:textSize="@dimen/_12ssp"
-            android:padding="@dimen/_10sdp"
-            android:paddingStart="@dimen/_20sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@drawable/unselected_medication"
-            android:backgroundTint="@color/light_grey"
-            app:layout_constraintTop_toTopOf="@id/et_intake_frequency"
-            app:layout_constraintBottom_toBottomOf="@id/et_intake_frequency"
-            app:layout_constraintStart_toEndOf="@id/tv_times"
-            app:layout_constraintEnd_toEndOf="@id/sv_medication_name"/>
 
-   <!--     <FrameLayout
+
+       <FrameLayout
             android:id="@+id/fl_intake_unit_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -218,7 +201,7 @@
             app:layout_constraintTop_toTopOf="@id/et_intake_frequency"
             app:layout_constraintBottom_toBottomOf="@id/et_intake_frequency"
             app:layout_constraintStart_toEndOf="@id/tv_times"
-            app:layout_constraintEnd_toEndOf="@id/fl_medication_name_container"
+            app:layout_constraintEnd_toEndOf="@id/tv_start_time"
             tools:ignore="RtlSymmetry">
 
             <Spinner
@@ -229,7 +212,7 @@
                 android:popupBackground="@color/colorAccent"
                 android:spinnerMode="dialog" />
 
-        </FrameLayout>    -->
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_duration"
@@ -251,16 +234,18 @@
             android:inputType="number"
             android:textSize="@dimen/_14ssp"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:textColorHint="@color/grey"
-            android:autofillHints="@string/first_name"
+            android:textColor="@color/grey"
             android:background="@drawable/unselected_medication"
             android:backgroundTint="@color/light_grey"
             android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@id/tv_duration"
             app:layout_constraintStart_toStartOf="@id/tv_duration"
-            app:layout_constraintEnd_toStartOf="@id/guideline3"/>
+            app:layout_constraintEnd_toStartOf="@id/guideline3"
+            tools:text="2"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

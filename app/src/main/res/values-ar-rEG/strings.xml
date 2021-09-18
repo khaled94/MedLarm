@@ -87,4 +87,12 @@
     <string name="loading">جاري التحميل</string>
     <string name="wrong_username_password">اسم المستخدم او كلمة المرور غير صحيحة</string>
     <string name="network_error">خطأ فى الاتصال بالانترنت</string>
+    <string name="empty_date">يجب عليك ملأ كل البيانات</string>
+    <string name="letters">غظضذ خثتشرقصجفعسنملةىكيطئءؤحزوهدباأإ. </string>
+    <string-array name="units">
+        <item>يوم</item>
+        <item>اسبوع</item>
+        <item>شهر</item>
+    </string-array>
+
 </resources>

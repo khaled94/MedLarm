@@ -190,6 +190,10 @@ dependencies {
     implementation 'com.applandeo:material-calendar-view:1.7.0'
     implementation 'com.google.android.material:material:1.4.0-alpha02'
 
+   // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
     // - - Room Persistence Library
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"

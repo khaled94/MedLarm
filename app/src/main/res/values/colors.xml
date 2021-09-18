@@ -20,4 +20,6 @@
     <color name="green">#10C131</color>
     <color name="red">#D8032B</color>
     <color name="faded_grey">#fafafa</color>
+    <color name="card_faded_black">#70000000</color>
+    <color name="transparent">#80000000</color>
 </resources>

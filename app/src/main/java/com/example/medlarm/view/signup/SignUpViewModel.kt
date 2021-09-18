@@ -20,11 +20,11 @@ class SignUpViewModel @Inject constructor(
 
     fun signUp(
         Id: Int, Fname: String, Lname: String, Email: String, DateOfBirth: String, Height: Int,
-        Weight: Int, Password: Int, ConfirmPassword: Int, IsHypertension: Boolean,
-        IsHighCholesterol: Boolean, IsIschemicHeart: Boolean, IsDiabetes: Boolean, IsChronicKidney: Boolean,
-        IsArthritis: Boolean, IsObstructivePulmonary: Boolean, IsAlzheimer: Boolean, IsDepression: Boolean,
-        IsHeartFailure: Boolean, IsDeleted: Boolean
-    ) {
+        Weight: Int, Password: String, ConfirmPassword: String, IsHypertension: Boolean, IsDiabetes: Boolean,
+        IsHeartDisease: Boolean, IsKidneyDisease: Boolean, IsLiverDisease: Boolean, IsAsthma: Boolean,
+        IsChronicObtructivePulmonaryDisease: Boolean, IsArthritis: Boolean, IsOsteoporosis: Boolean,
+        IsCancer: Boolean, IsAlzheimer: Boolean, IsOther: Boolean, IsDeleted: Boolean
+       ){
         execute(
             loadingConsumer = {
                 user.postValue(State.Loading)
@@ -47,15 +47,17 @@ class SignUpViewModel @Inject constructor(
                     Password,
                     ConfirmPassword,
                     IsHypertension,
-                    IsHighCholesterol,
-                    IsIschemicHeart,
                     IsDiabetes,
-                    IsChronicKidney,
+                    IsHeartDisease,
+                    IsKidneyDisease,
+                    IsLiverDisease,
+                    IsAsthma,
+                    IsChronicObtructivePulmonaryDisease,
                     IsArthritis,
-                    IsObstructivePulmonary,
+                    IsOsteoporosis,
+                    IsCancer,
                     IsAlzheimer,
-                    IsDepression,
-                    IsHeartFailure,
+                    IsOther,
                     IsDeleted
                 )
             )

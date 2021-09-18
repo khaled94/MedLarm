@@ -2,6 +2,7 @@ package com.example.medlarm.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.medlarm.R
@@ -13,6 +14,7 @@ import com.example.medlarm.view.home.HomeActivity
 import com.example.medlarm.view.passwordrecovery.PasswordRecoveryActivity
 import com.example.medlarm.view.signup.SignUpActivity
 import javax.inject.Inject
+
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
@@ -27,12 +29,31 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         setContentView(binding.root)
         loginViewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
-        binding.btnLogin.setOnClickListener {
-            loginViewModel.login(
-                binding.etUsername.text.toString(),
-                binding.etPassword.text.toString()
-            )
+        // TODO       sharedPref.clearSharedPref()// to be cleared if directed from old credentials
 
+        binding.root.setOnClickListener {
+            // it hide soft keyboard on edit text outside root layout click
+            hideSoftKeyboard()
+
+            // remove focus from edit text
+            binding.etUsername.clearFocus()
+            binding.etPassword.clearFocus()
+        }
+
+        binding.btnLogin.setOnClickListener {
+            if (checkEmpty()){
+                loginViewModel.login(
+                    binding.etUsername.text.toString(),
+                    binding.etPassword.text.toString()
+                )
+            }
+            else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.wrong_username_password),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         binding.tvForgetPassword.setOnClickListener {
@@ -58,6 +79,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     dialog.dismiss()
                     if (it.data.Status == "Done") {
                         preferenceManager.setUserId(userId = it.data.userResponseData.Id)
+                        Log.e("id",preferenceManager.getUserId().toString())
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -96,5 +118,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 }
             }
         })
+    }
+
+    private fun checkEmpty(): Boolean {
+        Log.e("username test",binding.etUsername.text.trim().toString())
+        Log.e("username check",binding.etUsername.text.trim().isNotEmpty().toString())
+        Log.e("Password test",binding.etPassword.text.trim().toString())
+        Log.e("Password check",binding.etPassword.text.trim().isNotEmpty().toString())
+
+        if (binding.etUsername.text.trim().isNotEmpty() &&
+            binding.etPassword.text.trim().isNotEmpty())
+                return true
+        return false
     }
 }

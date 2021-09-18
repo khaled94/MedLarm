@@ -7,11 +7,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medlarm.R
+import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
 import com.example.medlarm.databinding.ActivityHomeBinding
+import com.example.medlarm.utils.ErrorEntity
+import com.example.medlarm.utils.State
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
 import com.example.medlarm.view.alarm.AlarmActivity
 import com.example.medlarm.view.alarm.Receiver
@@ -22,8 +26,6 @@ import com.example.medlarm.view.settings.SettingsActivity
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -34,58 +36,25 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     lateinit var homeViewModel: HomeViewModel
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private val alarms = mutableListOf<Alarm>()
     private var currentMonth = 0
-
-    private val REQUEST_CODE = 100
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
+    val calendar = Calendar.getInstance()
 
     override fun getViewBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        val date = format.parse(Calendar.getInstance().time.toString())
-        homeViewModel.getAlarmByDate(preferenceManager.getUserId(), date)
-
-        // Creating the pending intent to send to the BroadcastReceiver
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val receiverIntent = Intent(this, Receiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(
-            this,
-            REQUEST_CODE,
-            receiverIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
         // Setting the specific time for the alarm manager to trigger the intent, in this example, the alarm is set to go off at 23:30, update the time according to your need
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
-        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1)
-
-        // Starts the alarm manager
-        /* alarmManager.setRepeating(
-             AlarmManager.RTC,
-             calendar.timeInMillis,
-             AlarmManager.INTERVAL_DAY,
-             pendingIntent
-         )*/
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent
-        )
+        //calendar.timeInMillis = System.currentTimeMillis()
+        //calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
+        //calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1)
 
         linearLayoutManager = LinearLayoutManager(this)
         binding.rvAlarms.layoutManager = linearLayoutManager
-//        loginViewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
@@ -99,6 +68,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         val endDate = Calendar.getInstance()
         endDate.add(Calendar.YEAR, 1)
 
+        homeViewModel.getAlarmByDate(preferenceManager.getUserId(),  specialFormat(calendar.time.toString()))
+        observeOnAlarmByDate()
+        //specialFormat(calendar.time.toString()).let { Log.e("today", it) }
+
         val horizontalCalendar = HorizontalCalendar.Builder(this, R.id.calendarView)
             .range(startDate, endDate)
             .datesNumberOnScreen(5)
@@ -108,20 +81,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDateSelected(date: Calendar?, position: Int) {
                 binding.tvCurrentMonth.text = mFormat.format(date?.timeInMillis)
+                homeViewModel.getAlarmByDate(preferenceManager.getUserId(),specialFormat(date?.time.toString()))
+                //specialFormat(date?.time.toString()).let { Log.e("newDate", it) }
             }
         }
 
-        /* val alarm1 = Alarm("panadol", "once", false, "",null,null)
-         val alarm2 = Alarm("decl", "once", false, "",null,null)
-         val alarm3 = Alarm("moov", "twice", false, "",null,null)
 
-         alarms.add(alarm1)
-         alarms.add(alarm2)
-         alarms.add(alarm3)*/
-
-        binding.rvAlarms.adapter = HomeAdapter(alarms) { alarm: Alarm ->
-            selectAlarm(alarm)
-        }
 
         binding.ivSetting.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
@@ -140,7 +105,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     }
 
-    private fun selectAlarm(alarm: Alarm) {
+    private fun selectAlarm(alarm: AlarmByDateResponseItem) {
         when (alarm.action) {
             "edit" -> {
                 val intent = Intent(this, EditMedicineActivity::class.java)
@@ -158,133 +123,84 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     }
 
+    fun observeOnAlarmByDate(){
+        homeViewModel.alarmByDateList.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.isNotEmpty()) {
+                        binding.rvAlarms.adapter =
+                            HomeAdapter(it.data) { alarm : AlarmByDateResponseItem ->
+                                selectAlarm(alarm)
+                            }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.wrong_username_password),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+    }
+
     @SuppressLint("SimpleDateFormat")
-    private fun dateSent(date: String): String? {
+    private fun dateSent(myd: String): String? {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
-        return sdf.format(date)
+        return sdf.format(myd)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun formatDate(date: String): String? {
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val formattedDate = format.parse(date)
+        return SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(formattedDate!!.time)
+    }
+
+    private fun specialFormat(inputDate : String): String {
+        val format = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val date = format.parse(inputDate)
+        return SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(date!!.time)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getAlarmByDate(preferenceManager.getUserId(),  specialFormat(calendar.time.toString()))
+        observeOnAlarmByDate()
     }
 
 }
-
-//var swipeController = SwipeController()
-//var itemTouchHelper = ItemTouchHelper(swipeController)
-
-//import com.alexandrius.accordionswipelayout.library.SwipeLayout
 /*
- fun collapse(view: View?) {
-        (rv_alarms.findViewHolderForAdapterPosition(0)!!.itemView as SwipeLayout).setItemState(
-            SwipeLayout.ITEM_STATE_COLLAPSED,
-            true
-        )
-    }
+   binding.rvAlarms.adapter = HomeAdapter(alarms) { alarm: Alarm ->
+            selectAlarm(alarm)
+        }
  */
-///////////////////////////////Option 1 /////////////////////////////////////////////////
-
-/* val touchListener = RecyclerTouchListener(this, homeBinding.rvAlarms)
-
-        touchListener
-            .setClickable(object : RecyclerTouchListener.OnRowClickListener {
-
-                override fun onRowClicked(position: Int) {
-                    Toast.makeText(applicationContext, alarms[position].name, Toast.LENGTH_SHORT).show();
-
-                }
-
-                override fun onIndependentViewClicked(independentViewID: Int, position: Int) {
-                    TODO("Not yet implemented")
-                }
-            })
-            .setSwipeOptionViews(R.id.iv_bg_delete,R.id.iv_bg_edit,R.id.iv_bg_calender)
-            .setSwipeable(R.id.foreground_view, R.id.background_view, object : RecyclerTouchListener.OnSwipeOptionsClickListener {
-
-                override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-
-                    when (viewID) {
-                        R.id.iv_bg_delete -> {
-
-                        }
-                        R.id.iv_bg_edit -> {
-
-                        }
-                        R.id.iv_bg_calender -> {
-
-                        }
-                    }
-
-                    }
-                })
-        homeBinding.rvAlarms.addOnItemTouchListener(touchListener)*/
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////option 2 ////////////////////////////////////////
-/* var itemTouchHelper = ItemTouchHelper(swipeController)
-      itemTouchHelper.attachToRecyclerView(rv_alarms)
-
-      rv_alarms.addItemDecoration(object : RecyclerView.ItemDecoration() {
-          override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-              swipeController.onDraw(c)
-          }
-      })*/
-
-/*   object : SwipeHelper(this, homeBinding.rvAlarms, false) {
-
-       override fun instantiateUnderlayButton(
-           viewHolder: RecyclerView.ViewHolder?,
-           underlayButtons: MutableList<UnderlayButton>?
-       ) {
-           // Archive Button
-           underlayButtons?.add(UnderlayButton(
-               "Archive",
-               AppCompatResources.getDrawable(
-                   this@HomeActivity,
-                   R.drawable.ic_clock
-               ),
-               Color.parseColor("#339EFF"), Color.parseColor("#ffffff"),
-               UnderlayButtonClickListener { pos: Int ->
-                   Toast.makeText(
-                       this@HomeActivity,
-                       "check $pos",
-                       Toast.LENGTH_SHORT
-                   ).show()
-               }
-           ))
-       }
-   }*/
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-/*var swipeController = SwipeController(object : SwipeControllerActions() {
-           override fun onLeftClicked(position: Int) {
-
-           }
-       })*/
-
-/*  val dates = getFutureDatesOfCurrentMonth()
-       linearLayoutManager = LinearLayoutManager(this)
-       linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-       homeBinding.rvCalender.layoutManager = linearLayoutManager
-       homeBinding.rvCalender.adapter=
-               HomeAdapter(dates) { date: Date -> selectDate(date) }*/
-/*
-private fun getFutureDatesOfCurrentMonth(): List<Date> {
-    // get all next dates of current month
-    currentMonth = calendar[Calendar.MONTH]
-    return getDates(mutableListOf())
-}
-
-private fun getDates(list: MutableList<Date>): List<Date> {
-    // load dates of whole month
-    calendar.set(Calendar.MONTH, currentMonth)
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
-    list.add(calendar.time)
-    while (currentMonth == calendar[Calendar.MONTH]) {
-        calendar.add(Calendar.DATE, +1)
-        if (calendar[Calendar.MONTH] == currentMonth)
-            list.add(calendar.time)
-    }
-    calendar.add(Calendar.DATE, -1)
-    return list
-}
-
-private fun selectDate(date: Date){
-
-} */

@@ -6,8 +6,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "Alarm")
-data class AlarmTableModel (
+@Entity(tableName = "Alarms")
+data class AlarmEntity (
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "Id")

@@ -4,13 +4,18 @@ import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
 import com.example.medlarm.data.model.responseModels.*
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
+import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
 import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponse
+import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponseItem
 import com.example.medlarm.data.model.responseModels.medicineslist.MedicinesList
 import com.example.medlarm.data.model.responseModels.userhistory.UserHistoryResponse
 import com.example.medlarm.data.model.responseModels.userresponse.UserResponse
 import com.example.medlarm.utils.ErrorHandler
 import com.example.medlarm.utils.State
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -69,7 +74,7 @@ class RepositoryImplementer @Inject constructor(
         return remoteDataSource.getUserHistory(userId).consumeSingle()
     }
 
-    override fun getAlarmByDate(userId: Int, date: Date): Single<State<AlarmByDateResponse>> {
+    override fun getAlarmByDate(userId: Int, date: String): Single<State<List<AlarmByDateResponseItem>>> {
         return remoteDataSource.getAlarmByDate(userId,date).consumeSingle()
     }
 
@@ -91,5 +96,13 @@ class RepositoryImplementer @Inject constructor(
 
     override fun getUserProfile(userId: Int): Single<State<UserProfileResponse>> {
         return remoteDataSource.getUserProfile(userId).consumeSingle()
+    }
+
+    override fun saveAlarmsToDatabase(alarmList: ArrayList<AlarmListResponseItem>) : Completable{
+        return localDataSource.saveAlarmsToDatabase(alarmList)
+    }
+
+    override fun getAlarmsFromDatabase(): Single<List<AlarmListResponseItem>> {
+        return localDataSource.getAlarmsFromDatabase()
     }
 }

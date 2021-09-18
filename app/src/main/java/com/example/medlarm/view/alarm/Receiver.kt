@@ -10,7 +10,6 @@ import java.util.*
 class Receiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.e( "Alarm Triggered", Calendar.getInstance().toString())
         /*val intent = Intent(context, RingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context?.startActivity(intent)*/
