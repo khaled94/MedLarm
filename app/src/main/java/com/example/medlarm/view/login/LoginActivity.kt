@@ -9,6 +9,7 @@ import com.example.medlarm.R
 import com.example.medlarm.databinding.ActivityLoginBinding
 import com.example.medlarm.utils.ErrorEntity
 import com.example.medlarm.utils.State
+import com.example.medlarm.view.changepassword.ChangePasswordActivity
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.home.HomeActivity
 import com.example.medlarm.view.passwordrecovery.PasswordRecoveryActivity
@@ -41,23 +42,22 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
 
         binding.btnLogin.setOnClickListener {
-            if (checkEmpty()){
+            if (checkEmpty()) {
                 loginViewModel.login(
                     binding.etUsername.text.toString(),
                     binding.etPassword.text.toString()
                 )
-            }
-            else{
+            } else {
                 Toast.makeText(
                     this,
-                    getString(R.string.wrong_username_password),
+                    getString(R.string.empty_data),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
         binding.tvForgetPassword.setOnClickListener {
-            val intent = Intent(this, PasswordRecoveryActivity::class.java)
+            val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
         }
 
@@ -79,7 +79,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     dialog.dismiss()
                     if (it.data.Status == "Done") {
                         preferenceManager.setUserId(userId = it.data.userResponseData.Id)
-                        Log.e("id",preferenceManager.getUserId().toString())
+                        preferenceManager.setUserName(
+                            it.data.userResponseData.Fname + " " +
+                                    it.data.userResponseData.Lname
+                        )
+                        Log.e("my user id", preferenceManager.getUserId().toString())
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -121,14 +125,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun checkEmpty(): Boolean {
-        Log.e("username test",binding.etUsername.text.trim().toString())
-        Log.e("username check",binding.etUsername.text.trim().isNotEmpty().toString())
-        Log.e("Password test",binding.etPassword.text.trim().toString())
-        Log.e("Password check",binding.etPassword.text.trim().isNotEmpty().toString())
-
         if (binding.etUsername.text.trim().isNotEmpty() &&
-            binding.etPassword.text.trim().isNotEmpty())
-                return true
+            binding.etPassword.text.trim().isNotEmpty()
+        )
+            return true
         return false
+    }
+
+    override fun onBackPressed() {
+        finishAffinity()
     }
 }

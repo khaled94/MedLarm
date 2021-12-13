@@ -32,7 +32,7 @@ class AddMedicineViewModel @Inject constructor(
 
     fun addNewMedicine(
         medicineId: Int,userId: Int, freqIntakeNo: Int, freqIntakeType: Int, durationNo: Int,
-        durationType: Int, startDate: String, startTime: String
+        durationType: Int, startDate: String, startTime: String,medicineName: String
     ) {
         execute(loadingConsumer = {
             addMedicineResult.postValue(State.Loading)
@@ -43,7 +43,7 @@ class AddMedicineViewModel @Inject constructor(
         }, useCase = repository.addMedicine(
             AddMedicineRequest(
                 medicineId, userId, freqIntakeNo,
-                freqIntakeType, durationNo, durationType, startDate, startTime
+                freqIntakeType, durationNo, durationType, startDate, startTime,medicineName
             )
         )
         )

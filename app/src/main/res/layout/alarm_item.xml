@@ -97,7 +97,7 @@
                    android:layout_height="wrap_content"
                    android:textSize="@dimen/_16ssp"
                    android:textColor="@color/colorPrimary"
-                   android:fontFamily="@font/montserrat_bold"
+                   android:fontFamily="@font/nexa_bold"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +109,7 @@
                    android:textSize="@dimen/_12ssp"
                    android:textColor="@color/colorPrimary"
                    android:layout_marginTop="@dimen/_5sdp"
-                   android:fontFamily="@font/montserrat_semi_bold"
+                   android:fontFamily="@font/nexa_book"
                    app:layout_constraintStart_toStartOf="@id/tv_medication_name_bg"
                    app:layout_constraintTop_toBottomOf="@id/tv_medication_name_bg" />
 
@@ -130,7 +130,7 @@
                    android:textSize="@dimen/_16ssp"
                    android:textColor="@color/colorPrimary"
                    android:layout_marginStart="@dimen/_5sdp"
-                   android:fontFamily="@font/montserrat_semi_bold"
+                   android:fontFamily="@font/nexa_book"
                    app:layout_constraintStart_toEndOf="@id/iv_clock_bg"
                    app:layout_constraintTop_toTopOf="@id/iv_clock_bg"
                    app:layout_constraintBottom_toBottomOf="@id/iv_clock_bg" />
@@ -186,9 +186,9 @@
                 android:id="@+id/tv_medication_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_14ssp"
                 android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/nexa_bold"
                 app:layout_constraintStart_toEndOf="@id/iv_medication_type"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="test"/>
@@ -199,9 +199,10 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_12ssp"
                 android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/montserrat_semi_bold"
+                android:fontFamily="@font/nexa_light"
                 app:layout_constraintStart_toStartOf="@id/tv_medication_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_medication_name" />
+                app:layout_constraintTop_toBottomOf="@id/tv_medication_name"
+                tools:text="test" />
 
             <ImageView
                 android:id="@+id/iv_clock"
@@ -217,10 +218,10 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_14ssp"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:fontFamily="@font/montserrat_semi_bold"
+                android:fontFamily="@font/nexa_light"
                 app:layout_constraintStart_toEndOf="@id/iv_clock"
                 app:layout_constraintTop_toTopOf="@id/iv_clock"
                 app:layout_constraintBottom_toBottomOf="@id/iv_clock" />

@@ -13,8 +13,10 @@ class Receiver : BroadcastReceiver() {
         /*val intent = Intent(context, RingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context?.startActivity(intent)*/
-
-       val intentService = Intent(context, AlarmService::class.java)
+        val ringId = intent?.getIntExtra("Ringtone",1)
+        Log.e("RingId from reciver",ringId.toString())
+        val intentService = Intent(context, AlarmService::class.java)
+        intentService.putExtra("Ringtone", ringId)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context?.startForegroundService(intentService)
         } else {

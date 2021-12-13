@@ -4,6 +4,7 @@ import com.example.medlarm.view.aboutus.AboutUsActivity
 import com.example.medlarm.view.aboutus.AboutUsViewModelModule
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
 import com.example.medlarm.view.addmedicine.AddMedicineViewModelModule
+import com.example.medlarm.view.addprofile.AddProfileActivity
 import com.example.medlarm.view.alarm.AlarmActivity
 import com.example.medlarm.view.alarm.RingActivity
 import com.example.medlarm.view.medicinehistory.MedicineHistoryActivity
@@ -23,6 +24,7 @@ import com.example.medlarm.view.login.LoginViewModelModule
 import com.example.medlarm.view.medicinehistory.MedicineHistoryViewModelModule
 import com.example.medlarm.view.passwordrecovery.PasswordRecoveryActivity
 import com.example.medlarm.view.passwordrecovery.PasswordRecoveryViewModelModule
+import com.example.medlarm.view.ringtone.RingtoneActivity
 import com.example.medlarm.view.settings.SettingsActivity
 import com.example.medlarm.view.settings.SettingsViewModelModule
 import com.example.medlarm.view.signup.SignUpActivity
@@ -78,6 +80,9 @@ abstract class ActivityBuildersModule {
    @ContributesAndroidInjector(modules = [ContactUsViewModelModule::class])
    abstract fun contributeContactUsActivity(): ContactUsActivity
 
+   @ContributesAndroidInjector(modules = [SignUpViewModelModule::class])
+   abstract fun contributeAddProfileActivity(): AddProfileActivity
+
    @ContributesAndroidInjector()
    abstract fun contributeChooseLanguageActivity(): ChooseLanguageActivity
 
@@ -86,4 +91,7 @@ abstract class ActivityBuildersModule {
 
    @ContributesAndroidInjector()
    abstract fun contributeRingActivity(): RingActivity
+
+   @ContributesAndroidInjector()
+   abstract fun contributeRingtoneActivity(): RingtoneActivity
 }

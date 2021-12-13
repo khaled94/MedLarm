@@ -1,4 +1,4 @@
-package com.example.medlarm.view.signup
+package com.example.medlarm.view.addprofile
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -8,24 +8,25 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medlarm.R
-import com.example.medlarm.databinding.ActivitySignupBinding
+import com.example.medlarm.databinding.ActivityAddProfileBinding
 import com.example.medlarm.utils.ErrorEntity
 import com.example.medlarm.utils.State
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.common.Chronic
 import com.example.medlarm.view.home.HomeActivity
-import com.example.medlarm.view.login.LoginActivity
+import com.example.medlarm.view.signup.SignUpAdapter
+import com.example.medlarm.view.signup.SignUpViewModel
 import com.simplemobiletools.commons.extensions.toInt
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
+class AddProfileActivity : BaseActivity<ActivityAddProfileBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun getViewBinding() = ActivitySignupBinding.inflate(layoutInflater)
+    override fun getViewBinding() = ActivityAddProfileBinding.inflate(layoutInflater)
 
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var gridLayoutManager: GridLayoutManager
@@ -35,7 +36,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignupBinding.inflate(layoutInflater)
+        binding = ActivityAddProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         signUpViewModel = ViewModelProvider(this, viewModelFactory).get(SignUpViewModel::class.java)
 
@@ -63,25 +64,25 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
         gridLayoutManager = GridLayoutManager(this, 4)
         binding.rvChronics.layoutManager = gridLayoutManager
 
-        val chronic1 = Chronic(getString(R.string.hypertension), R.drawable.ic_new_hypertension, false)
+        val chronic1 = Chronic(getString(R.string.hypertension), R.drawable.ic_hypertension, false)
         val chronic2 = Chronic(getString(R.string.diabetes), R.drawable.ic_diabetes, false)
         val chronic3 =
-            Chronic(getString(R.string.heart_disease), R.drawable.ic_ischemic_heart, false)
+            Chronic(getString(R.string.heart_disease), R.drawable.ic_heart_disease, false)
         val chronic4 =
             Chronic(getString(R.string.kidney_disease), R.drawable.ic_chronic_kidney, false)
         val chronic5 =
-            Chronic(getString(R.string.liver_disease), R.drawable.ic_liver, false)
+            Chronic(getString(R.string.liver_disease), R.drawable.ic_obstructive_pulmonary, false)
         val chronic6 = Chronic(getString(R.string.asthma), R.drawable.ic_inhaler, false)
         val chronic7 = Chronic(
             getString(R.string.chronic_obstructive_pulmonary_disease),
-            R.drawable.ic_obstructive_pulmonary,
+            R.drawable.ic_high_cholesterol,
             false
         )
         val chronic8 = Chronic(getString(R.string.arthritis), R.drawable.ic_arthritis, false)
-        val chronic9 = Chronic(getString(R.string.osteoporosis), R.drawable.ic_osteoporosis, false)
-        val chronic10 = Chronic(getString(R.string.cancer), R.drawable.ic_cancer, false)
+        val chronic9 = Chronic(getString(R.string.osteoporosis), R.drawable.ic_suppository, false)
+        val chronic10 = Chronic(getString(R.string.cancer), R.drawable.ic_ischemic_heart, false)
         val chronic11 = Chronic(getString(R.string.depression), R.drawable.ic_depression, false)
-        val chronic12 = Chronic(getString(R.string.other), R.drawable.ic_disease_prevention, false)
+        val chronic12 = Chronic(getString(R.string.other), R.drawable.ic_suppository, false)
 
         chronics.add(chronic1)
         chronics.add(chronic2)
@@ -159,12 +160,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 ).show()
             }
         }
-
-        binding.tvLogin.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
 
     private fun observeOnUser() {
@@ -177,10 +172,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                     dialog.dismiss()
                     if (it.data.Status == "Done") {
                         preferenceManager.setUserId(userId = it.data.userResponseData.Id)
-                        preferenceManager.setUserName(
-                            it.data.userResponseData.Fname + " " +
-                                    it.data.userResponseData.Lname
-                        )
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -291,5 +282,4 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
             return true
         return false
     }
-
 }

@@ -87,9 +87,12 @@
     <string name="larm" translatable="false">Larm</string>
     <string name="loading">loading</string>
     <string name="wrong_username_password">Wrong Username Password</string>
-    <string name="empty_date">You must Fill all the data</string>
+    <string name="empty_data">You must Fill all the data</string>
     <string name="network_error">Network Error</string>
     <string name="letters">.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/\\@</string>
+    <string name="empty_username_password">Empty Username Password</string>
+    <string name="change_ringtone">Change Ringtone</string>
+
     <string-array name="units">
         <item>Day</item>
         <item>Week</item>

@@ -2,6 +2,7 @@ package com.example.medlarm.datasource.repository
 
 import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
 import com.example.medlarm.data.model.responseModels.*
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
@@ -44,8 +45,8 @@ class RemoteDataSource @Inject constructor
         return serviceApi.contactUs()
     }
 
-    override fun updateProfile(signUpRequest: SignUpRequest): Single<UserResponse> {
-        return serviceApi.updateProfile(signUpRequest)
+    override fun updateProfile(editProfileRequest: EditProfileRequest): Single<UserResponse> {
+        return serviceApi.updateProfile(editProfileRequest)
     }
 
     override fun changePassword(changePasswordRequest: ChangePasswordRequest): Single<ChangePasswordResponse> {
@@ -64,7 +65,7 @@ class RemoteDataSource @Inject constructor
         return serviceApi.getAlarmByDate(userId,date)
     }
 
-    override fun updateTakenAlarm(takenAlarmList: TakenAlarmList): Single<UpdateTakenAlarmResponse> {
+    override fun updateTakenAlarm(takenAlarmList: ArrayList<TakenAlarmListItem>): Single<UpdateTakenAlarmResponse> {
         return serviceApi.updateTakenAlarm(takenAlarmList)
     }
 

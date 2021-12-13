@@ -7,11 +7,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/iv_logo_circle"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:scaleType="fitCenter"
+        android:gravity="center"
+        android:elevation="@dimen/_10sdp"
+        android:background="@drawable/alarm_logo_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cv_container"
+        app:layout_constraintBottom_toTopOf="@id/cv_container"/>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="@id/cv_container"
+        app:layout_constraintStart_toStartOf="@id/cv_container"
+        app:layout_constraintEnd_toEndOf="@id/cv_container"/>
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_new_alarm_logo"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:scaleType="fitCenter"
+        android:gravity="center"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="@id/iv_logo_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cv_container"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tv_med"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/med"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/ebrima_bold"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintRight_toLeftOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo"/>
+
+    <TextView
+        android:id="@+id/tv_larm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/larm"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        android:textColor="@color/red"
+        android:fontFamily="@font/ebrima_bold"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="@id/tv_med"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+
+        app:layout_constraintBottom_toBottomOf="@id/tv_med"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_50ssp"
+        android:elevation="0dp"
         android:background="@drawable/window_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,60 +98,39 @@
             android:paddingEnd="@dimen/_15sdp">
 
             <ImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:src="@drawable/ic_logo_alarm"
-                android:scaleType="fitCenter"
-                android:gravity="center"
-                android:elevation="@dimen/_10sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <TextView
-                android:id="@+id/tv_med"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/med"
-                android:textSize="@dimen/_25ssp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toStartOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_larm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/larm"
-                android:textSize="@dimen/_25ssp"
-                android:textStyle="bold"
-                android:textColor="@color/red"
-                android:visibility="invisible"
-                app:layout_constraintStart_toEndOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/tv_med"
-                app:layout_constraintBottom_toBottomOf="@id/tv_med"/>
-
-            <ImageView
                 android:id="@+id/iv_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_med"
-                app:layout_constraintBottom_toBottomOf="@id/tv_med"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hi"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/nexa_book"
+                app:layout_constraintTop_toBottomOf="@id/iv_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_medication"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/ic_cough_syrup"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
             <TextView
                 android:id="@+id/tv_time_for_medication"
@@ -87,35 +139,8 @@
                 android:text="@string/time_for_medication"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_14ssp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:fontFamily="@font/montserrat_bold"
-                app:layout_constraintTop_toBottomOf="@id/iv_logo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_medication"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:src="@drawable/ic_cough_syrup"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:padding="@dimen/_20sdp"
-                android:background="@drawable/alarm_medication_background"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_time_for_medication" />
-
-            <TextView
-                android:id="@+id/tv_medication_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/medication_name"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_16ssp"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/nexa_book"
                 app:layout_constraintTop_toBottomOf="@id/iv_medication"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -125,50 +150,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dose"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_16ssp"
-                android:fontFamily="@font/montserrat_bold"
-                app:layout_constraintTop_toBottomOf="@id/tv_medication_name"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/nexa_book"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_for_medication"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <Button
-                android:id="@+id/btn_taken"
+            <ImageView
+                android:id="@+id/iv_taken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/taken"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_15ssp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/button_taken_background"
-                android:fontFamily="@font/montserrat_bold"
-                android:textAllCaps="false"
-                android:padding="@dimen/_10sdp"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
+                android:src="@drawable/ic_alarm_taken"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@id/tv_dose" />
 
-            <Button
-                android:id="@+id/btn_snooze"
+            <ImageView
+                android:id="@+id/iv_snooze"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/snooze"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_15ssp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:padding="@dimen/_10sdp"
-                android:background="@drawable/button_snooze_background"
-                android:fontFamily="@font/montserrat_bold"
+                android:src="@drawable/ic_alarm_snooze"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/btn_taken"
-                app:layout_constraintBottom_toBottomOf="@id/btn_taken" />
+                app:layout_constraintTop_toTopOf="@id/iv_taken"
+                app:layout_constraintBottom_toBottomOf="@id/iv_taken" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,10 +1,9 @@
 package com.example.medlarm.view.home
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -17,8 +16,6 @@ import com.example.medlarm.databinding.ActivityHomeBinding
 import com.example.medlarm.utils.ErrorEntity
 import com.example.medlarm.utils.State
 import com.example.medlarm.view.addmedicine.AddMedicineActivity
-import com.example.medlarm.view.alarm.AlarmActivity
-import com.example.medlarm.view.alarm.Receiver
 import com.example.medlarm.view.common.*
 import com.example.medlarm.view.editmedicine.EditMedicineActivity
 import com.example.medlarm.view.medicinehistory.MedicineHistoryActivity
@@ -68,7 +65,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         val endDate = Calendar.getInstance()
         endDate.add(Calendar.YEAR, 1)
 
-        homeViewModel.getAlarmByDate(preferenceManager.getUserId(),  specialFormat(calendar.time.toString()))
+        if (isOnline()) {
+            homeViewModel.updateTakenAlarms(takenAlarmList)
+        }
+
+        homeViewModel.getAlarmByDate(
+            preferenceManager.getUserId(),
+            specialFormat(calendar.time.toString())
+        )
         observeOnAlarmByDate()
         //specialFormat(calendar.time.toString()).let { Log.e("today", it) }
 
@@ -81,12 +85,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDateSelected(date: Calendar?, position: Int) {
                 binding.tvCurrentMonth.text = mFormat.format(date?.timeInMillis)
-                homeViewModel.getAlarmByDate(preferenceManager.getUserId(),specialFormat(date?.time.toString()))
+                homeViewModel.getAlarmByDate(
+                    preferenceManager.getUserId(),
+                    specialFormat(date?.time.toString())
+                )
                 //specialFormat(date?.time.toString()).let { Log.e("newDate", it) }
             }
         }
-
-
 
         binding.ivSetting.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
@@ -109,11 +114,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         when (alarm.action) {
             "edit" -> {
                 val intent = Intent(this, EditMedicineActivity::class.java)
+                intent.putExtra("alarmId",alarm.Id)
                 startActivity(intent)
             }
             "delete" -> {
-                val intent = Intent(this, AlarmActivity::class.java)
-                startActivity(intent)
+                homeViewModel.removeAlarm(alarm.Id)
+                observeOnRemoveAlarm()
             }
             "history" -> {
                 val intent = Intent(this, MedicineHistoryActivity::class.java)
@@ -123,7 +129,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     }
 
-    fun observeOnAlarmByDate(){
+    private fun observeOnAlarmByDate() {
         homeViewModel.alarmByDateList.observe(this, {
             when (it) {
                 is State.Loading -> {
@@ -133,15 +139,65 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     dialog.dismiss()
                     if (it.data.isNotEmpty()) {
                         binding.rvAlarms.adapter =
-                            HomeAdapter(it.data) { alarm : AlarmByDateResponseItem ->
+                            HomeAdapter(it.data) { alarm: AlarmByDateResponseItem ->
                                 selectAlarm(alarm)
                             }
                     } else {
+                         Toast.makeText(
+                             this,
+                             getString(R.string.network_error),
+                             Toast.LENGTH_SHORT
+                         ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+    }
+
+    private fun observeOnRemoveAlarm() {
+        homeViewModel.alarmRemoved.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.Code == "200") {
+                        homeViewModel.getAlarmByDate(
+                            preferenceManager.getUserId(),
+                            specialFormat(calendar.time.toString())
+                        )
+                    } else {
                         Toast.makeText(
-                            this,
-                            getString(R.string.wrong_username_password),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                             this,
+                             getString(R.string.network_error),
+                             Toast.LENGTH_SHORT
+                         ).show()
                     }
                 }
                 is State.Error -> {
@@ -186,7 +242,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         return SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(formattedDate!!.time)
     }
 
-    private fun specialFormat(inputDate : String): String {
+    private fun specialFormat(inputDate: String): String {
         val format = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
         val date = format.parse(inputDate)
         return SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(date!!.time)
@@ -194,8 +250,19 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        homeViewModel.getAlarmByDate(preferenceManager.getUserId(),  specialFormat(calendar.time.toString()))
+        homeViewModel.getAlarmByDate(
+            preferenceManager.getUserId(),
+            specialFormat(calendar.time.toString())
+        )
         observeOnAlarmByDate()
+    }
+
+    private fun isOnline(): Boolean {
+        val connectivityManager =
+            this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        return connectivityManager.activeNetworkInfo != null &&
+                connectivityManager.activeNetworkInfo!!.isConnected
     }
 
 }

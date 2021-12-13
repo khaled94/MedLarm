@@ -1,6 +1,5 @@
 package com.example.medlarm.view.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,21 +35,19 @@ class HomeAdapter(
             binding.tvMedicationName.text = alarm.MedicineName
             binding.tvMedicationNameBg.text = alarm.MedicineName
             binding.tvMedicationDose.text =
-                (alarm.FrequentlyIntakeNo.toString() + "times" + alarm.FrequentlyIntakeType)
+                (alarm.FrequentlyIntakeNo.toString() + " " +"times" + " " +alarm.FrequentlyIntakeType)
             binding.tvMedicationDoseBg.text =
-                (alarm.FrequentlyIntakeNo.toString() + "times" + alarm.FrequentlyIntakeType)
+                (alarm.FrequentlyIntakeNo.toString() + " " +"times" + " " +alarm.FrequentlyIntakeType)
             binding.tvTime.text = alarm.Time
             binding.tvTimeBg.text = alarm.Time
 
             itemView.setOnClickListener {
                 if (alarm.showOptions) {
-                    Log.e("options", "true")
                     binding.foregroundView.visibility = View.VISIBLE
                     binding.ivMedicationType.visibility = View.VISIBLE
                     binding.backgroundView.visibility = View.INVISIBLE
                     alarm.showOptions = false
                 } else {
-                    Log.e("options","false")
                     binding.foregroundView.visibility = View.INVISIBLE
                     binding.ivMedicationTypeBg.visibility = View.INVISIBLE
                     binding.backgroundView.visibility = View.VISIBLE

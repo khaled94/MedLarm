@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.activity.result.ActivityResult
@@ -14,12 +15,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.medlarm.R
 import com.example.medlarm.databinding.ActivitySplashBinding
 import com.example.medlarm.view.common.BaseActivity
+import com.example.medlarm.view.home.HomeActivity
 import com.example.medlarm.view.login.LoginActivity
 import java.util.*
 
-class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
-    private val _splashTimeOut: Long = 2000
+    private val _splashTimeOut: Long = 3000
     private lateinit var handler: Handler
 
     override fun getViewBinding() = ActivitySplashBinding.inflate(layoutInflater)
@@ -29,47 +31,58 @@ class SplashActivity :  BaseActivity<ActivitySplashBinding>() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-    val myFadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_fading)
+        val myFadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_fading)
         binding.ivLogo.startAnimation(myFadeInAnimation)
 
-        if(preferenceManager.getUserId() != 0)
-                                         navigateToLogin()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                val overlaySettings = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
-                        "package:$packageName"
+        if (preferenceManager.getUserId() != 0)
+            navigateToHome()
+        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(this)) {
+                    val overlaySettings = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
+                            "package:$packageName"
+                        )
                     )
-                )
-                //   startActivityForResult(overlaySettings, 100)
-                val startForResult =
-                    registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-                    { result: ActivityResult ->
-                        if (Settings.canDrawOverlays(this)) {
-                           navigateToLogin()
+                    //   startActivityForResult(overlaySettings, 100)
+                    val startForResult =
+                        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+                        { result: ActivityResult ->
+                            if (Settings.canDrawOverlays(this)) {
+                                navigateToLogin()
+                            }
+                            //if (result.resultCode == Activity.RESULT_OK)
                         }
-                        //if (result.resultCode == Activity.RESULT_OK)
-                    }
-                startForResult.launch(overlaySettings)
-            }
-            else{
+                    startForResult.launch(overlaySettings)
+                } else {
+                    navigateToLogin()
+                }
+            } else {
                 navigateToLogin()
             }
         }
-        else{
-            navigateToLogin()
-        }
-                //}
+
+        //}
     }
 
-    private fun navigateToLogin(){
+    private fun navigateToLogin() {
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed(
             {
-                //calendar.timeInMillis,
-                setAlarm(Calendar.getInstance().timeInMillis,-3)
+                setAlarm(Calendar.getInstance().timeInMillis, -3, 1)
                 val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            },
+            _splashTimeOut
+        )
+    }
+
+    private fun navigateToHome() {
+        handler = Handler(Looper.getMainLooper())
+        handler.postDelayed(
+            {
+                val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
             },

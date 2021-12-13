@@ -2,6 +2,7 @@ package com.example.medlarm.datasource.repository
 
 import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
 import com.example.medlarm.data.model.responseModels.*
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
@@ -24,12 +25,12 @@ interface DataSource {
     fun getMedicineList(categoryId : Int): Single<MedicinesList>
     fun aboutUs(): Single<AboutUsResponse>
     fun contactUs(): Single<ContactUsResponse>
-    fun updateProfile(signUpRequest: SignUpRequest): Single<UserResponse>
+    fun updateProfile(editProfileRequest: EditProfileRequest): Single<UserResponse>
     fun changePassword(changePasswordRequest: ChangePasswordRequest): Single<ChangePasswordResponse>
     fun getAlarmList(userId: Int): Single<AlarmListResponse>
     fun getUserHistory(userId: Int): Single<UserHistoryResponse>
     fun getAlarmByDate(userId: Int,date: String): Single<List<AlarmByDateResponseItem>>
-    fun updateTakenAlarm(takenAlarmList: TakenAlarmList): Single<UpdateTakenAlarmResponse>
+    fun updateTakenAlarm(takenAlarmList: ArrayList<TakenAlarmListItem>): Single<UpdateTakenAlarmResponse>
     fun removeAlarm(alarmId: Int): Single<RemoveAlarmResponse>
     fun updateAlarm(updateAlarmRequest: UpdateAlarmRequest): Single<UpdateAlarmResponse>
     fun getAlarmDetails(alarmId: Int): Single<AlarmDetails>

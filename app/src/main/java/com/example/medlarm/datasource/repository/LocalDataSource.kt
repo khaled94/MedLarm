@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
 import com.example.medlarm.data.model.responseModels.*
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
 import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponse
@@ -65,7 +66,7 @@ class LocalDataSource @Inject constructor
         TODO("Not yet implemented")
     }
 
-    override fun updateProfile(signUpRequest: SignUpRequest): Single<UserResponse> {
+    override fun updateProfile(editProfileRequest: EditProfileRequest): Single<UserResponse> {
         TODO("Not yet implemented")
     }
 
@@ -85,7 +86,7 @@ class LocalDataSource @Inject constructor
         TODO("Not yet implemented")
     }
 
-    override fun updateTakenAlarm(takenAlarmList: TakenAlarmList): Single<UpdateTakenAlarmResponse> {
+    override fun updateTakenAlarm(takenAlarmList: ArrayList<TakenAlarmListItem>): Single<UpdateTakenAlarmResponse> {
         TODO("Not yet implemented")
     }
 

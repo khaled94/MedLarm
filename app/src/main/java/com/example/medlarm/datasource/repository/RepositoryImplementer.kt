@@ -2,6 +2,7 @@ package com.example.medlarm.datasource.repository
 
 import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
 import com.example.medlarm.data.model.responseModels.*
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
@@ -58,8 +59,8 @@ class RepositoryImplementer @Inject constructor(
         return remoteDataSource.contactUs().consumeSingle()
     }
 
-    override fun updateProfile(signUpRequest: SignUpRequest): Single<State<UserResponse>> {
-        return remoteDataSource.updateProfile(signUpRequest).consumeSingle()
+    override fun updateProfile(editProfileRequest: EditProfileRequest): Single<State<UserResponse>> {
+        return remoteDataSource.updateProfile(editProfileRequest).consumeSingle()
     }
 
     override fun changePassword(changePasswordRequest: ChangePasswordRequest): Single<State<ChangePasswordResponse>> {
@@ -78,7 +79,7 @@ class RepositoryImplementer @Inject constructor(
         return remoteDataSource.getAlarmByDate(userId,date).consumeSingle()
     }
 
-    override fun updateTakenAlarm(takenAlarmList: TakenAlarmList): Single<State<UpdateTakenAlarmResponse>> {
+    override fun updateTakenAlarm(takenAlarmList: ArrayList<TakenAlarmListItem>): Single<State<UpdateTakenAlarmResponse>> {
         return remoteDataSource.updateTakenAlarm(takenAlarmList).consumeSingle()
     }
 

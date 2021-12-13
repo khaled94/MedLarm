@@ -1,6 +1,7 @@
 package com.example.medlarm.view.editprofile
 
 import androidx.lifecycle.MutableLiveData
+import com.example.medlarm.data.model.requestModels.EditProfileRequest
 import com.example.medlarm.data.model.requestModels.SignUpRequest
 import com.example.medlarm.data.model.responseModels.UserProfileResponse
 import com.example.medlarm.data.model.responseModels.userresponse.UserResponse
@@ -21,8 +22,8 @@ class EditProfileViewModel@Inject constructor(
     val userProfile = MutableLiveData<State<UserProfileResponse>>()
 
     fun editProfile(
-        Id: Int, Fname: String, Lname: String, Email: String, DateOfBirth: String, Height: Int,
-        Weight: Int, Password: String, ConfirmPassword: String, IsHypertension: Boolean, IsDiabetes: Boolean,
+        Id: Int, Fname: String, Lname: String, Email: String, DateOfBirth: String, Height: Double,
+        Weight: Double, Password: String, IsHypertension: Boolean, IsDiabetes: Boolean,
         IsHeartDisease: Boolean, IsKidneyDisease: Boolean, IsLiverDisease: Boolean, IsAsthma: Boolean,
         IsChronicObtructivePulmonaryDisease: Boolean, IsArthritis: Boolean, IsOsteoporosis: Boolean,
         IsCancer: Boolean, IsAlzheimer: Boolean, IsOther: Boolean, IsDeleted: Boolean
@@ -37,8 +38,8 @@ class EditProfileViewModel@Inject constructor(
             throwableConsumer = {
                 user.postValue(State.Error(exception = errorHandler.getError(it)))
             },
-            useCase = repository.signUp(
-                SignUpRequest(
+            useCase = repository.updateProfile(
+                EditProfileRequest(
                     Id,
                     Fname,
                     Lname,
@@ -47,7 +48,6 @@ class EditProfileViewModel@Inject constructor(
                     Height,
                     Weight,
                     Password,
-                    ConfirmPassword,
                     IsHypertension,
                     IsDiabetes,
                     IsHeartDisease,

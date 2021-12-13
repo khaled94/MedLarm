@@ -16,7 +16,7 @@
         android:textColor="@color/colorPrimary"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:fontFamily="@font/montserrat_semi_bold"
+        android:fontFamily="@font/nexa_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="March 2021"/>

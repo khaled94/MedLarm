@@ -8,5 +8,6 @@ data class AddMedicineRequest(
     val DurationNo: Int,
     val DurationType: Int,
     val StartDate: String,
-    val StartTime: String
+    val StartTime: String,
+    val MedicineName:String
 )

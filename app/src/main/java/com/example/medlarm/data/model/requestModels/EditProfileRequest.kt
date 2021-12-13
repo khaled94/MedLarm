@@ -1,6 +1,6 @@
-package com.example.medlarm.data.model.responseModels
+package com.example.medlarm.data.model.requestModels
 
-data class UserProfileResponse(
+data class EditProfileRequest(
     val Id: Int,
     val Fname: String,
     val Lname: String,
@@ -20,8 +20,6 @@ data class UserProfileResponse(
     val IsOsteoporosis: Boolean,
     val IsCancer: Boolean,
     val IsAlzheimer: Boolean,
-    val IsDepression: Boolean,
-    val haveChronicDisease: Boolean,
     val IsOther: Boolean,
     val IsDeleted: Boolean
 )

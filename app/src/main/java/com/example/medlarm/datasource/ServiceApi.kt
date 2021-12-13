@@ -2,11 +2,10 @@ package com.example.medlarm.datasource
 
 import com.example.medlarm.data.model.requestModels.*
 import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
 import com.example.medlarm.data.model.responseModels.*
-import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
 import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponse
-import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponseItem
 import com.example.medlarm.data.model.responseModels.lookup.LookupsResponse
 import com.example.medlarm.data.model.responseModels.medicineslist.MedicinesList
 import com.example.medlarm.data.model.responseModels.medicinestypelist.MedicineTypeList
@@ -30,8 +29,8 @@ interface ServiceApi {
     @POST("PostSignUp")
     fun signUp(@Body body: SignUpRequest): Single<UserResponse>
 
-    @POST("PostUpdateProfile")
-    fun updateProfile(@Body body: SignUpRequest): Single<UserResponse>
+    @POST("UpdateProfile")
+    fun updateProfile(@Body body: EditProfileRequest): Single<UserResponse>
 
     @POST("PostSignIn")
     fun login(@Body body: SignInRequest): Single<UserResponse>
@@ -64,17 +63,17 @@ interface ServiceApi {
     ): Single<List<AlarmByDateResponseItem>>
 
     @POST("UpdateTakenAlarms")
-    fun updateTakenAlarm(@Body body: TakenAlarmList): Single<UpdateTakenAlarmResponse>
+    fun updateTakenAlarm(@Body body: ArrayList<TakenAlarmListItem>): Single<UpdateTakenAlarmResponse>
 
-    @POST("RemoveAlarm/{AlarmId}")
+    @POST("RemoveAlarm/{alarmId}")
     fun removeAlarm(@Path("alarmId") alarmId: Int): Single<RemoveAlarmResponse>
 
     @POST("UpdateFrequentIntake")
     fun updateAlarm(@Body body: UpdateAlarmRequest): Single<UpdateAlarmResponse>
 
-    @POST("GetFreqIntake/{AlarmId}")
+    @GET("GetFreqIntake/{alarmId}")
     fun getAlarmDetails(@Path("alarmId") alarmId: Int): Single<AlarmDetails>
 
-    @POST("GetUser/{UserId}")
+    @GET("GetUser/{userId}")
     fun getUserProfile(@Path("userId") userId: Int): Single<UserProfileResponse>
 }

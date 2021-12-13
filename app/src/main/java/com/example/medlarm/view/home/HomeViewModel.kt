@@ -2,6 +2,9 @@ package com.example.medlarm.view.home
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmList
+import com.example.medlarm.data.model.requestModels.takenalarms.TakenAlarmListItem
+import com.example.medlarm.data.model.responseModels.RemoveAlarmResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponse
 import com.example.medlarm.data.model.responseModels.alarmbydate.AlarmByDateResponseItem
 import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponse
@@ -22,6 +25,7 @@ class HomeViewModel @Inject constructor(
     val alarmByDateList = MutableLiveData<State<List<AlarmByDateResponseItem>>>()
     val remoteAlarmList = MutableLiveData<State<AlarmListResponse>>()
     val localAlarmList = MutableLiveData<List<AlarmListResponseItem>>()
+    var alarmRemoved = MutableLiveData<State<RemoveAlarmResponse>>()
 
     fun getAlarmByDate(userId: Int,date: String) {
         execute(loadingConsumer = {
@@ -50,5 +54,21 @@ class HomeViewModel @Inject constructor(
         }.doOnError {
 
         }
+    }
+
+    fun removeAlarm(alarmId: Int){
+        execute(loadingConsumer = {
+            alarmRemoved.postValue(State.Loading)
+        }, successConsumer = {
+            alarmRemoved.postValue(it)
+        }, throwableConsumer = {
+            alarmRemoved.postValue(State.Error(exception = errorHandler.getError(it)))
+        }, useCase = repository.removeAlarm(alarmId))
+
+
+    }
+
+    fun updateTakenAlarms(takenAlarmList: ArrayList<TakenAlarmListItem>){
+      repository.updateTakenAlarm(takenAlarmList)
     }
 }

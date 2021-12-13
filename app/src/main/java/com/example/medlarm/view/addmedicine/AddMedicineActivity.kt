@@ -2,32 +2,23 @@ package com.example.medlarm.view.addmedicine
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.SearchManager
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.database.Cursor
-import android.database.MatrixCursor
 import android.os.Build
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.SearchView
-import androidx.cursoradapter.widget.CursorAdapter
-import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medlarm.R
 import com.example.medlarm.data.model.responseModels.alarmlist.AlarmListResponseItem
-import com.example.medlarm.data.model.responseModels.medicineslist.MedicinesListItem
 import com.example.medlarm.databinding.ActivityAddMedicineBinding
 import com.example.medlarm.utils.ErrorEntity
 import com.example.medlarm.utils.State
 import com.example.medlarm.view.common.BaseActivity
 import com.example.medlarm.view.common.Medication
 import com.example.medlarm.view.home.HomeActivity
-import com.simplemobiletools.commons.extensions.hideKeyboard
 import com.simplemobiletools.commons.extensions.toInt
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,12 +36,12 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
     private val medicationTypes = mutableListOf<Medication>()
     private var calender: Calendar = Calendar.getInstance()
     private val today: Long = Calendar.getInstance().timeInMillis
-    var medications: ArrayList<MedicinesListItem> = arrayListOf()
+    //var medications: ArrayList<MedicinesListItem> = arrayListOf()
     var isStartDayToday: Boolean = false
     var startYear by Delegates.notNull<Int>()
     var startMonth by Delegates.notNull<Int>()
     var startDay by Delegates.notNull<Int>()
-    var medicationId = 1
+    var medicationId = 2
 
     override fun getViewBinding() = ActivityAddMedicineBinding.inflate(layoutInflater)
 
@@ -88,64 +79,6 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                 selectMedication(medication)
             }
 
-        // Search View
-
-        val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
-        val to = intArrayOf(R.id.item_label)
-        val cursorAdapter = SimpleCursorAdapter(
-            this, R.layout.medicine_name_item,
-            null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-
-        binding.svMedicationName.suggestionsAdapter = cursorAdapter
-
-        binding.svMedicationName.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                hideKeyboard()
-                return false
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                val cursor = MatrixCursor(
-                    arrayOf(
-                        BaseColumns._ID,
-                        SearchManager.SUGGEST_COLUMN_TEXT_1
-                    )
-                )
-                val medicationNames = medications.map {  it.Name  }
-                query?.let {
-                    medicationNames.forEachIndexed { index, medication ->
-                        if (medication.contains(query, true))
-                            cursor.addRow(arrayOf(index, medication))
-                        //Log.e("medication", medication)
-                        val myMedication: MedicinesListItem? = medications.find { it.Name == medication}
-                        medicationId = myMedication!!.Id
-                        }
-                }
-                cursorAdapter.changeCursor(cursor)
-                return true
-            }
-        })
-
-        binding.svMedicationName.setOnSuggestionListener(object :
-            SearchView.OnSuggestionListener {
-            override fun onSuggestionSelect(position: Int): Boolean {
-                return false
-            }
-
-            override fun onSuggestionClick(position: Int): Boolean {
-                hideKeyboard()
-                val cursor = binding.svMedicationName.suggestionsAdapter.getItem(position) as Cursor
-                val selection =
-                    cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
-                binding.svMedicationName.setQuery(selection, true)
-                return true
-            }
-        })
-
-
 //    Setup Date picker
 
         val startDateSetListener =
@@ -155,7 +88,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                     && calender.get(Calendar.MONTH) == monthOfYear
                     && calender.get(Calendar.DAY_OF_MONTH) == dayOfMonth
                 )
-                    isStartDayToday = true
+                isStartDayToday = true
                 startYear = year
                 startMonth = monthOfYear
                 startDay = dayOfMonth
@@ -204,10 +137,13 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             val timePickerDialog = TimePickerDialog(
                 this,
                 android.R.style.Theme_Holo_Light_Dialog,
+                //android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 timeSetListener, calender.get(Calendar.HOUR_OF_DAY),
-                calender.get(Calendar.MINUTE), true
+                calender.get(Calendar.MINUTE), false
             )
             timePickerDialog.show()
+            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
             timePickerDialog.onWindowFocusChanged(true)
         }
 
@@ -228,6 +164,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                 "Month" -> durationType = 3
             }
 
+
               addMedicineViewModel.addNewMedicine(
                   medicationId,
                   preferenceManager.getUserId(),
@@ -236,7 +173,8 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                   binding.etDuration.text.toInt(),
                   durationType,
                   dateSent()!!,
-                  binding.tvStartTime.text.toString()
+                  timeSent()!!,
+                  binding.etMedicationName.text.toString(),
               )
           }
 
@@ -258,57 +196,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             binding.tvDoseType.visibility = View.GONE
         }
         addMedicineViewModel.getMedicineList(medication.id)
-        observeOnMedicineList()
-    }
-
-    private fun observeOnMedicineList() {
-        addMedicineViewModel.medicineList.observe(this, {
-            when (it) {
-                is State.Loading -> {
-                    dialog.show()
-                }
-                is State.Success -> {
-                    dialog.dismiss()
-                    if (it.data.isNotEmpty()) {
-                        medications = it.data
-                        binding.svMedicationName.setQuery("",false)
-                        binding.svMedicationName.clearFocus()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "medication error",
-                            //getString(R.string.wrong_username_password),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-                is State.Error -> {
-                    dialog.dismiss()
-                    when (it.exception) {
-                        is ErrorEntity.NetworkError -> {
-
-                        }
-                        is ErrorEntity.AccessDenied -> {
-
-                        }
-                        is ErrorEntity.BadRequest -> {
-
-                        }
-                        is ErrorEntity.NotFound -> {
-
-                        }
-                        is ErrorEntity.ServiceUnavailable -> {
-
-                        }
-                        is ErrorEntity.UnKnownError -> {
-
-                        }
-                    }
-                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        })
+        //observeOnMedicineList()
     }
 
 
@@ -370,11 +258,11 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                 is State.Success -> {
                     dialog.dismiss()
                     if (it.data.isNotEmpty()) {
-                        Toast.makeText(
+                        /*Toast.makeText(
                             this,
                             "yes yes yes ",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
                         addMedicineViewModel.saveAlarmsToDatabase(it.data)
                         observeOnAlarmsSavedInDB()
                     } else {
@@ -430,11 +318,11 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
             if(it.isNotEmpty()){
               sortDates(it)
               calender.time = specialFormat(userAlarmList[0].Date,userAlarmList[0].Time)
-              setAlarm(calender.timeInMillis,userAlarmList[0].Id)
-
-               val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+              setAlarm(calender.timeInMillis,userAlarmList[0].Id,0)
+                dialog.dismiss()
+                val intent = Intent(this, HomeActivity::class.java)
+              startActivity(intent)
+              finish()
             }
         })
     }
@@ -446,14 +334,23 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
     }
 
     private fun updateTimeInView() {
-        val format = "HH:mm" // mention the format you need
-        val sdf = SimpleDateFormat(format, Locale.US)
+        //val format = "HH:mm" // mention the format you need
+        //val sdf = SimpleDateFormat(format, Locale.US)
+        val format = "h:mma"
+        val sdf = SimpleDateFormat(format.toLowerCase(Locale.ROOT), Locale.US) // "12:18am"
+
         binding.tvStartTime.text = sdf.format(calender.time)
     }
 
     @SuppressLint("SimpleDateFormat")
     private fun dateSent(): String? {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        return sdf.format(calender.time)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun timeSent(): String? {
+        val sdf = SimpleDateFormat("HH:mm:ss", Locale.US)
         return sdf.format(calender.time)
     }
 
@@ -468,12 +365,120 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
         }.toMutableList()
     }
     private fun specialFormat(inputDate : String , inputTime : String): Date {
-        var myDateFormatter = inputDate.substring(0,10)+" "+inputTime
+        val myDateFormatter = inputDate.substring(0,10)+" "+inputTime
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-        return sdf.parse(myDateFormatter)
+        return sdf.parse(myDateFormatter)!!
     }
 }
 
+/*
+// Search View
+
+        val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
+        val to = intArrayOf(R.id.item_label)
+        val cursorAdapter = SimpleCursorAdapter(
+            this, R.layout.medicine_name_item,
+            null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+        )
+
+        binding.svMedicationName.suggestionsAdapter = cursorAdapter
+
+        binding.svMedicationName.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                hideKeyboard()
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                val cursor = MatrixCursor(
+                    arrayOf(
+                        BaseColumns._ID,
+                        SearchManager.SUGGEST_COLUMN_TEXT_1
+                    )
+                )
+                val medicationNames = medications.map {  it.Name  }
+                query?.let {
+                    medicationNames.forEachIndexed { index, medication ->
+                        if (medication.contains(query, true))
+                            cursor.addRow(arrayOf(index, medication))
+                        //Log.e("medication", medication)
+                        val myMedication: MedicinesListItem? = medications.find { it.Name == medication}
+                        medicationId = myMedication!!.Id
+                        }
+                }
+                cursorAdapter.changeCursor(cursor)
+                return true
+            }
+        })
+
+        binding.svMedicationName.setOnSuggestionListener(object :
+            SearchView.OnSuggestionListener {
+            override fun onSuggestionSelect(position: Int): Boolean {
+                return false
+            }
+
+            override fun onSuggestionClick(position: Int): Boolean {
+                hideKeyboard()
+                val cursor = binding.svMedicationName.suggestionsAdapter.getItem(position) as Cursor
+                val selection =
+                    cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
+                binding.svMedicationName.setQuery(selection, true)
+                return true
+            }
+        })
+ */
+/*
+private fun observeOnMedicineList() {
+    addMedicineViewModel.medicineList.observe(this, {
+        when (it) {
+            is State.Loading -> {
+                dialog.show()
+            }
+            is State.Success -> {
+                dialog.dismiss()
+                if (it.data.isNotEmpty()) {
+                    medications = it.data
+                    binding.svMedicationName.setQuery("",false)
+                    binding.svMedicationName.clearFocus()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "medication error",
+                        //getString(R.string.wrong_username_password),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            is State.Error -> {
+                dialog.dismiss()
+                when (it.exception) {
+                    is ErrorEntity.NetworkError -> {
+
+                    }
+                    is ErrorEntity.AccessDenied -> {
+
+                    }
+                    is ErrorEntity.BadRequest -> {
+
+                    }
+                    is ErrorEntity.NotFound -> {
+
+                    }
+                    is ErrorEntity.ServiceUnavailable -> {
+
+                    }
+                    is ErrorEntity.UnKnownError -> {
+
+                    }
+                }
+                Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    })
+} */
 //import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 //import com.wdullaer.materialdatetimepicker.time.Timepoint
 

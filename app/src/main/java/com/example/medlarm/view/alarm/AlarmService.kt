@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
@@ -36,8 +37,8 @@ class AlarmService : Service() {
         val floatView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(R.layout.window_alarm, null)
 
-        val taken = floatView.findViewById(R.id.btn_taken) as Button
-        val snooze = floatView.findViewById(R.id.btn_snooze) as Button
+        val taken = floatView.findViewById(R.id.iv_taken) as ImageView
+        val snooze = floatView.findViewById(R.id.iv_snooze) as ImageView
         val close = floatView.findViewById(R.id.iv_cancel) as ImageView
 
         layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -86,15 +87,22 @@ class AlarmService : Service() {
             vibrator.cancel()
         }
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.eraser)
-        mediaPlayer.isLooping = true
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
         //notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
 
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+
+        val ringId = intent.getIntExtra("Ringtone",1)
+        Log.e("RingId from service",ringId.toString())
+        val url = "alarm$ringId"
+        val resIdSound: Int = resources.getIdentifier(url, "raw", this.packageName)
+        mediaPlayer = MediaPlayer.create(this, resIdSound)
+        mediaPlayer.isLooping = true
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
         val notificationIntent = Intent(this, RingActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)

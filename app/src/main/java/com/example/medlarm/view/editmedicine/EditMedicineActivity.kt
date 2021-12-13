@@ -3,13 +3,19 @@ package com.example.medlarm.view.editmedicine
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medlarm.R
 import com.example.medlarm.databinding.ActivityEditMedicineBinding
+import com.example.medlarm.utils.ErrorEntity
+import com.example.medlarm.utils.State
 import com.example.medlarm.view.addmedicine.AddMedicineAdapter
 import com.example.medlarm.view.common.BaseActivity
+import com.example.medlarm.view.common.Chronic
 import com.example.medlarm.view.common.Medication
+import com.example.medlarm.view.editprofile.EditProfileAdapter
+import com.example.medlarm.view.editprofile.EditProfileViewModel
 import com.example.medlarm.view.home.HomeActivity
 import javax.inject.Inject
 
@@ -17,6 +23,8 @@ class EditMedicineActivity : BaseActivity<ActivityEditMedicineBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var editMedicineViewModel: EditMedicineViewModel
+
     private var gridLayoutManager: GridLayoutManager? = null
     private val medicationTypes = mutableListOf<Medication>()
 
@@ -25,6 +33,12 @@ class EditMedicineActivity : BaseActivity<ActivityEditMedicineBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        editMedicineViewModel =
+            ViewModelProvider(this, viewModelFactory).get(EditMedicineViewModel::class.java)
+
+        val alarmId = intent.getIntExtra("alarmId",-1)
+        editMedicineViewModel.getAlarmDetails(alarmId)
+        observeOnCurrentData()
 
         gridLayoutManager = GridLayoutManager(this, 4)
         binding.rvMedications.layoutManager = gridLayoutManager
@@ -78,5 +92,63 @@ class EditMedicineActivity : BaseActivity<ActivityEditMedicineBinding>() {
             binding.tvDose.visibility = View.GONE
             binding.tvDoseType.visibility = View.GONE
         }
+    }
+
+    private fun observeOnCurrentData() {
+        editMedicineViewModel.alarmDetails.observe(this, {
+            when (it) {
+                is State.Loading -> {
+                    dialog.show()
+                }
+                is State.Success -> {
+                    dialog.dismiss()
+                    if (it.data.Id != -1) {
+                        binding.etMedicationName.setText(it.data.MedicineId)
+                        binding.etIntakeFrequency.setText(it.data.FreqIntakeNo)
+                        when (it.data.FreqIntakeType) {
+                            binding.spIntakeUnit.selectedItem -> "Daily"
+                            binding.spIntakeUnit.selectedItem -> "Weekly"
+                            binding.spIntakeUnit.selectedItem -> "Monthly"
+                            binding.spIntakeUnit.selectedItem -> "Yearly"
+                        }
+
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.network_error),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is State.Error -> {
+                    dialog.dismiss()
+                    when (it.exception) {
+                        is ErrorEntity.NetworkError -> {
+
+                        }
+                        is ErrorEntity.AccessDenied -> {
+
+                        }
+                        is ErrorEntity.BadRequest -> {
+
+                        }
+                        is ErrorEntity.NotFound -> {
+
+                        }
+                        is ErrorEntity.ServiceUnavailable -> {
+
+                        }
+                        is ErrorEntity.UnKnownError -> {
+
+                        }
+                    }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG)
+                        .show()
+
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        })
     }
 }

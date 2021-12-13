@@ -36,7 +36,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
             else {
                 Toast.makeText(
                     this,
-                    getString(R.string.wrong_username_password),
+                    getString(R.string.network_error),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -59,7 +59,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
                     } else {
                         Toast.makeText(
                             this,
-                            getString(R.string.wrong_username_password),
+                            getString(R.string.network_error),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

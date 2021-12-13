@@ -10,5 +10,5 @@
         android:textSize="@dimen/_14ssp"
         android:padding="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:fontFamily="@font/montserrat_bold" />
+        android:fontFamily="@font/nexa_bold" />
 
