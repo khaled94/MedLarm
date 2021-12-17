@@ -25,17 +25,18 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         if(preferenceManager.getCurrentLocale() == "ar")
             binding.tvLanguage.text = getString(R.string.arabic)
         else
             binding.tvLanguage.text = getString(R.string.english)
 
 
-        binding.tvProfileName.text = "Hi".plus(preferenceManager.getUserName())
+        binding.tvProfileName.text = getString(R.string.hi).plus(" ").plus(preferenceManager.getUserName())
         binding.ivEdit.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
+
+
         }
 
       /*  binding.ivAddProfile.setOnClickListener {

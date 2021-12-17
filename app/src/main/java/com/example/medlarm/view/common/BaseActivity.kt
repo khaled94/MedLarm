@@ -85,7 +85,7 @@ abstract class BaseActivity<B : ViewBinding> : DaggerAppCompatActivity() {
         preferenceManager.setCurrentAlarmIndex(alarmIndex)
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val receiverIntent = Intent(this, Receiver::class.java)
-        receiverIntent.putExtra("Ringtone",preferenceManager.getRingId())
+        receiverIntent.putExtra("Ringtone",preferenceManager.getRingName())
         Log.e("time",alarmTime.toString())
         pendingIntent = PendingIntent.getBroadcast(
             this,

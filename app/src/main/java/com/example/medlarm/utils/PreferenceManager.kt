@@ -60,16 +60,17 @@ class PreferenceManager(context: Context) {
         return preferences.getInt("alarm_id", 0)
     }
 
-    fun setRing(ringId: Int?) {
+    fun setRingName(ringName: String?) {
         with(preferences.edit()) {
-            putInt("ring_id", ringId!!)
+            putString("ring_name", ringName!!)
             apply()
         }
     }
 
-    fun getRingId(): Int {
-        return preferences.getInt("ring_id", 1)
+    fun getRingName(): String? {
+        return preferences.getString("ring_name", "alarm1")
     }
+
 
 
     fun clear () {

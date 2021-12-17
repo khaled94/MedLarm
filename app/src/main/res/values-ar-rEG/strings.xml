@@ -38,9 +38,9 @@
     <string name="choose_language">اختر اللغة</string>
     <string name="skip">تخطى</string>
     <string name="medication_type">نوع الدواء</string>
-    <string name="tablet">قرص دواء</string>
+    <string name="tablet">قرص</string>
     <string name="capsule">كبسولة</string>
-    <string name="liquid">سائل</string>
+    <string name="liquid">شرب</string>
     <string name="drops">قطرات</string>
     <string name="injection">حقنة</string>
     <string name="inhaler">جهاز الاستنشاق</string>

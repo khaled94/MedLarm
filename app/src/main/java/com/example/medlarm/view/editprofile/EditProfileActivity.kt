@@ -388,4 +388,9 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>() {
         return false
     }
 
+    override fun onBackPressed() {
+        dialog.dismiss()
+        super.onBackPressed()
+    }
+
 }

@@ -6,6 +6,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -48,6 +49,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        Log.e("current", calender.time.toString())
 
         addMedicineViewModel =
             ViewModelProvider(this, viewModelFactory).get(AddMedicineViewModel::class.java)
@@ -258,11 +260,6 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
                 is State.Success -> {
                     dialog.dismiss()
                     if (it.data.isNotEmpty()) {
-                        /*Toast.makeText(
-                            this,
-                            "yes yes yes ",
-                            Toast.LENGTH_SHORT
-                        ).show()*/
                         addMedicineViewModel.saveAlarmsToDatabase(it.data)
                         observeOnAlarmsSavedInDB()
                     } else {
@@ -316,11 +313,11 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
     private fun observeOnLocalAlarmList() {
         addMedicineViewModel.localAlarmList.observe(this, {
             if(it.isNotEmpty()){
-              sortDates(it)
-              calender.time = specialFormat(userAlarmList[0].Date,userAlarmList[0].Time)
-              setAlarm(calender.timeInMillis,userAlarmList[0].Id,0)
-                dialog.dismiss()
-                val intent = Intent(this, HomeActivity::class.java)
+              calender.time = specialFormat(it[0].Date,it[0].Time)
+              Log.e("cal tome",calender.time.toString())
+              setAlarm(calender.timeInMillis,it[0].Id,0)
+              dialog.dismiss()
+              val intent = Intent(this, HomeActivity::class.java)
               startActivity(intent)
               finish()
             }
@@ -329,7 +326,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
 
     private fun updateDateInView() {
         val format = "dd/MM/yyyy" // mention the format you need
-        val sdf = SimpleDateFormat(format, Locale.US)
+        val sdf = SimpleDateFormat(format, Locale(preferenceManager.getCurrentLocale()))
         binding.tvStartDate.text = sdf.format(calender.time)
     }
 
@@ -337,7 +334,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
         //val format = "HH:mm" // mention the format you need
         //val sdf = SimpleDateFormat(format, Locale.US)
         val format = "h:mma"
-        val sdf = SimpleDateFormat(format.toLowerCase(Locale.ROOT), Locale.US) // "12:18am"
+        val sdf = SimpleDateFormat(format.toLowerCase(Locale.ROOT), Locale(preferenceManager.getCurrentLocale())) // "12:18am"
 
         binding.tvStartTime.text = sdf.format(calender.time)
     }
@@ -356,7 +353,7 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
 
     @SuppressLint("LogNotTimber")
     private fun sortDates(dates : List<AlarmListResponseItem>){
-
+        //Log.e("current",calender.time)
         userAlarmList = dates.dropWhile {
             calender.time.after(specialFormat(it.Date,it.Time))
         }.
@@ -368,6 +365,11 @@ class AddMedicineActivity : BaseActivity<ActivityAddMedicineBinding>() {
         val myDateFormatter = inputDate.substring(0,10)+" "+inputTime
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         return sdf.parse(myDateFormatter)!!
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog.dismiss()
     }
 }
 

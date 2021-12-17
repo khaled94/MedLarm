@@ -1,6 +1,7 @@
 package com.example.medlarm.datasource.repository
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.medlarm.data.model.requestModels.*
@@ -128,13 +129,20 @@ class LocalDataSource @Inject constructor
     @SuppressLint("LogNotTimber")
     private fun sortDates(dates : List<AlarmListResponseItem>){
         val calender: Calendar = Calendar.getInstance()
+        Log.e("first date" , specialFormat(dates[0].Date,dates[0].Time).toString())
+        Log.e("current date",calender.time.toString())
+        Log.e(" is first after ",calender.time.after(specialFormat(dates[0].Date,dates[0].Time)).toString())
+        Log.e("dates",dates.toString())
+        Log.e("size",dates.size.toString())
 
-        userAlarmList = dates.dropWhile {
-            calender.time.after(specialFormat(it.Date,it.Time))
+        userAlarmList = dates.filter {
+            specialFormat(it.Date,it.Time).after(calender.time)
         }.
         sortedBy {
             specialFormat(it.Date,it.Time)
         }.toMutableList()
+        Log.e("dates after",userAlarmList.toString())
+        Log.e("size after",userAlarmList.size.toString())
     }
 
     private fun specialFormat(inputDate : String , inputTime : String): Date {
